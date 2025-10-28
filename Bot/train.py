@@ -11,8 +11,8 @@ from Bot import path
 import json
 
 stemmer = LancasterStemmer()
-with open(path.getJsonPath()) as json_data:
-    intents = json.load(json_data)
+with open(path.getJsonPath(), encoding='utf-8') as json_file:
+    intents = json.load(json_file)
 
 words = []
 classes = []
@@ -49,15 +49,19 @@ for doc in documents:
     output_row = list(output_empty)
     output_row[classes.index(doc[1])] = 1
 
-    training.append([bag, output_row])
+    # Sửa lại thành như thế này
+    training.append(bag + output_row)
 
 random.shuffle(training)
 training = np.array(training)
 
-train_x = list(training[:, 0])
-train_y = list(training[:, 1])
+# Sửa lại thành như sau:
+train_x = training[:, :len(words)]
+train_y = training[:, len(words):]
 
-tf.reset_default_graph()
+
+# Sửa thành như sau:
+tf.compat.v1.reset_default_graph()
 net = tflearn.input_data(shape=[None, len(train_x[0])])
 net = tflearn.fully_connected(net, 8)
 net = tflearn.fully_connected(net, 8)

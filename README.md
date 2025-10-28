@@ -1,4 +1,4 @@
-# Tensorflow Chatbot
+# CHATBOT_WEB
 
 AI ChatBot that uses Python Tensorflow and Natural Language Processing (NLP) using TFLearn as a learning engine. This is capable of interacting multiple ways. Each of these module are functioning independently.
 
@@ -18,8 +18,8 @@ Program requires following dependencies
 
 After successfully installation of above dependencies, you need to follow these steps in order to train the bot. 
 
-* You can find [data model](https://github.com/Sweatnessstrong/Tensorflow-Chatbot/blob/master/Bot/content.json) from */Bot/content.json* and change the content as you wish. 
-* Execute [train.py](https://github.com/Sweatnessstrong/Tensorflow-Chatbot/blob/master/Bot/train.py) file which is inside */Bot/* directory to train the model that you have prepared.
+* You can find [data model](https://github.com/Sweatnessstrong/CHATBOT_WEB/blob/master/Bot/content.json) from */Bot/content.json* and change the content as you wish. 
+* Execute [train.py](https://github.com/Sweatnessstrong/CHATBOT_WEB/blob/master/Bot/train.py) file which is inside */Bot/* directory to train the model that you have prepared.
 * Then, You are done!
 
 
@@ -32,7 +32,7 @@ Django framework is used to implement this web app. You can install Django by fa
 
 *After installation of Django framework, you need to follow these steps*
 
-* Find [settings.py](https://github.com/Sweatnessstrong/Tensorflow-Chatbot/blob/master/Tensorflow_Chatbot/settings.py) file inside */Tensorflow_Chatbot/* directory.
+* Find [settings.py](https://github.com/Sweatnessstrong/CHATBOT_WEB/blob/master/CHATBOT_WEB/settings.py) file inside */CHATBOT_WEB/* directory.
 * Replace 96 line according to the path of the static folder of your project under *STATICFILES_DIRS * variable. 
 * Then execute following command inside the root directory.
 
@@ -43,10 +43,10 @@ python manage.py runserver
 ![web](https://user-images.githubusercontent.com/7195953/34638687-2e3b728c-f2f7-11e7-9843-0e0992c2c1d3.PNG)
 
 #### Rest api
-This app allows you to interact with bot using a rest api. You can find the [controller](https://github.com/Sweatnessstrong/Tensorflow-Chatbot/blob/master/Tensorflow_Chatbot/Api/controller.py) file from */Tensorflow_Chatbot/Api/controller.py* location. To execute this Rest api you also need to install [Django framework](https://www.djangoproject.com/download/) 
+This app allows you to interact with bot using a rest api. You can find the [controller](https://github.com/Sweatnessstrong/CHATBOT_WEB/blob/master/CHATBOT_WEB/Api/controller.py) file from */CHATBOT_WEB/Api/controller.py* location. To execute this Rest api you also need to install [Django framework](https://www.djangoproject.com/download/) 
 
 
-* Request URL     &nbsp;&nbsp;&nbsp;: http://127.0.0.1:8000/api
+* Request URL     &nbsp;&nbsp;&nbsp;: http://127.0.0.1:8088/api
 * Request Type    &nbsp;&nbsp;&nbsp;: 'POST'
 * Pay load        &nbsp;&nbsp;&nbsp;: ```{"msg" : "What is your name"}```
 * Response        &nbsp;&nbsp;&nbsp;: ```{"ques" : "What is your name", "res":"I'm Slack", "time" :"2018-01 10:07:32"}```
@@ -56,21 +56,21 @@ This app allows you to interact with bot using a rest api. You can find the [con
 
 #### GUI
 
-You can find UI directory from root directory and then execute [ChatView.py](https://github.com/Sweatnessstrong/Tensorflow-Chatbot/blob/master/UI/ChatView.py) file. Before executing this you need to install pygubu. Pygubu is a RAD tool which helps to develop python tknter base user interfaces.
+You can find UI directory from root directory and then execute [ChatView.py](https://github.com/Sweatnessstrong/CHATBOT_WEB/blob/master/UI/ChatView.py) file. Before executing this you need to install pygubu. Pygubu is a RAD tool which helps to develop python tknter base user interfaces.
 * Download pygubu from [here](https://pypi.python.org/pypi/pygubu).
 * And then extract .tar.gz file and execute following command.
 
 ```
 python setup.py install
 ```
-* Then execute [ChatView.py](https://github.com/Sweatnessstrong/Tensorflow-Chatbot/blob/master/UI/ChatView.py) file inside */UI* directory.
+* Then execute [ChatView.py](https://github.com/Sweatnessstrong/CHATBOT_WEB/blob/master/UI/ChatView.py) file inside */UI* directory.
 
 ![ui](https://user-images.githubusercontent.com/7195953/34639820-4645c196-f30d-11e7-881a-ffb51ace6341.PNG)
 
 
 #### CLI
 
-You can interact with bot through command line interface. So find [cli.py](https://github.com/Sweatnessstrong/Tensorflow-Chatbot/blob/master/CLI/cli.py) file from */CLI* directory and then execute.
+You can interact with bot through command line interface. So find [cli.py](https://github.com/Sweatnessstrong/CHATBOT_WEB/blob/master/CLI/cli.py) file from */CLI* directory and then execute.
 
 ![cli](https://user-images.githubusercontent.com/7195953/34639005-60870836-f2fd-11e7-8f73-ed0d100b5521.PNG)
 
@@ -84,4 +84,13 @@ You can interact with bot through command line interface. So find [cli.py](https
 
 
 
+1. data_utils.py -> thay dòng 
+def resize_image(in_image, new_width, new_height, out_image=None,
+                 #resize_mode=Image.ANTIALIAS):
+		resize_mode=Image.Resampling.LANCZOS):
+    """ Resize an image.
 
+2. recurrent.py -> thay dòng
+def is_sequence(seq):
+  """Tự định nghĩa lại hàm is_sequence để tương thích."""
+  return isinstance(seq, Sequence) and not isinstance(seq, str)

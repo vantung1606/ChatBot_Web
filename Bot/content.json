@@ -1,38 +1,2057 @@
-{"intents": [
-        {"tag": "1",
-         "patterns": ["Hi","Is anyone there?", "Hello"],
-         "responses": ["Hi", "Hello", "Hi there, how can I help?"],
-         "context_set": ""
+{
+    "intents": [
+        {
+            "tag": "greeting",
+            "patterns": [
+                "Xin chào",
+                "Chào shop",
+                "Hello",
+                "Shop ơi",
+                "Hi",
+                "Có ai ở đó không?",
+                "Chào bạn"
+            ],
+            "responses": [
+                "Xin chào! Shop áo bóng đá có thể giúp gì cho bạn hôm nay?",
+                "Hello 👋, bạn đang quan tâm đến áo CLB hay phụ kiện ạ?",
+                "Chào mừng bạn đến với shop áo bóng đá ⚽, mình có thể hỗ trợ gì cho bạn?"
+            ]
         },
-        {"tag": "2",
-         "patterns": ["Who are you","What is you name","Do you have a name"],
-         "responses": ["Hi, I'm slack", "My name is slack", "I'm Slack"],
-         "context_set": ""
+        {
+            "tag": "product_shirt",
+            "patterns": [
+                "Có áo bóng đá không?",
+                "Áo CLB có những loại nào?",
+                "Áo đội tuyển có không?",
+                "Áo training",
+                "Áo fan"
+            ],
+            "responses": [
+                "Shop hiện có đầy đủ áo CLB châu Âu (MU, Real, Barca, PSG...), áo tuyển quốc gia, áo training và áo fan.",
+                "Dạ có ạ 😊, shop có áo CLB, áo đội tuyển, áo fan phiên bản Player/Fan.",
+                "Bạn muốn xem áo CLB hay áo tuyển quốc gia để mình tư vấn chi tiết hơn?"
+            ]
         },
-        {"tag": "5",
-         "patterns": ["How is the weather today"],
-         "responses": ["It's sunny day"],
-         "context_set": ""
+        {
+            "tag": "product_accessory",
+            "patterns": [
+                "Có phụ kiện bóng đá không?",
+                "Bọc ống đồng",
+                "Găng tay thủ môn",
+                "Bóng size 5",
+                "Bình nước",
+                "Túi đựng giày"
+            ],
+            "responses": [
+                "Shop có đầy đủ phụ kiện: bóng size 4-5, găng tay thủ môn, bọc ống đồng, băng keo, bình nước, túi đựng giày...",
+                "Dạ có bạn nhé! Phụ kiện bóng đá rất đa dạng: túi rút, túi giày, bọc ống đồng, găng thủ môn, bóng thi đấu/training...",
+                "Bạn đang cần phụ kiện nào để mình tư vấn cụ thể hơn ạ?"
+            ]
         },
-        {"tag": "6",
-         "patterns": ["What events are available today"],
-         "responses": ["Live in concent will be at UOM JJ hall"],
-         "context_set": ""
+        {
+            "tag": "shipping",
+            "patterns": [
+                "Có ship không?",
+                "Giao hàng toàn quốc?",
+                "Freeship không?",
+                "Ship COD không?"
+            ],
+            "responses": [
+                "Shop giao hàng toàn quốc qua GHN, GHTK 🚚. Bạn có thể nhận hàng và thanh toán COD.",
+                "Dạ có ạ, shop hỗ trợ ship toàn quốc. Phí ship từ 20-30k tùy khu vực.",
+                "Shop có freeship theo chương trình khuyến mãi từng thời điểm, bạn cần mình kiểm tra khuyến mãi hiện tại không?"
+            ]
         },
-        {"tag": "7",
-         "patterns": ["How are you","What's up"],
-         "responses": ["I'm fine, Thanks for asking.","I'm doing well","I'm fine. And you ?"],
-         "context_set": ""
+        {
+            "tag": "promotion",
+            "patterns": [
+                "Có khuyến mãi gì?",
+                "Mã giảm giá",
+                "Sale",
+                "Giảm giá áo CLB không?"
+            ],
+            "responses": [
+                "Hiện tại shop có chương trình giảm 10-20% cho một số mẫu áo CLB 🔥.",
+                "Bạn có thể nhập mã **AOBONG10** để được giảm giá thêm khi thanh toán online.",
+                "Shop thường xuyên có flash sale cuối tuần, bạn có muốn mình gửi danh sách áo đang giảm giá không?"
+            ]
         },
-        {"tag": "8",
-         "patterns": ["Bye", "See you later", "Goodbye"],
-         "responses": ["See you later, thanks for visiting", "Have a nice day", "Bye! Come back again soon."],
-         "context_set": ""
+        {
+            "tag": "size",
+            "patterns": [
+                "Áo có size gì?",
+                "Size áo bóng đá",
+                "Có size S M L XL không?",
+                "Áo vừa cho người 70kg không?"
+            ],
+            "responses": [
+                "Áo có size S-XL. Vòng ngực từ 88-104cm tùy size.",
+                "Dạ có đủ size S, M, L, XL. Bạn cho mình chiều cao và cân nặng, mình tư vấn size chuẩn hơn nhé 😊.",
+                "Nếu bạn cao khoảng 1m70-1m75 và nặng 65-75kg thì thường mặc size L là vừa."
+            ]
         },
-        {"tag": "9",
-         "patterns": ["Thank you"],
-         "responses": ["You are welcome"],
-         "context_set": ""
+        {
+            "tag": "exchange_return",
+            "patterns": [
+                "Đổi trả thế nào?",
+                "Bao lâu được đổi?",
+                "Chính sách đổi trả",
+                "Đổi size được không?"
+            ],
+            "responses": [
+                "Shop hỗ trợ đổi hàng trong vòng 7 ngày nếu chưa sử dụng và còn nguyên tag tem.",
+                "Bạn có thể đổi size hoặc đổi mẫu nếu còn hàng. Phí ship đổi trả do khách hàng chịu giúp shop.",
+                "Chính sách đổi trả linh hoạt ạ: đổi size miễn phí nếu hàng bị lỗi hoặc shop gửi nhầm."
+            ]
+        },
+        {
+            "tag": "price_lookup",
+            "patterns": [
+                "Áo MU giá bao nhiêu?",
+                "Áo PSG giá",
+                "Áo Barca giá",
+                "Áo Real bao nhiêu tiền?",
+                "Áo Liverpool giá"
+            ],
+            "responses": [
+                "Mình kiểm tra giá giúp bạn nhé! Bạn vui lòng cho mình biết muốn bản Fan hay Player?",
+                "Áo bóng đá có nhiều phiên bản. Bạn muốn tham khảo giá áo CLB nào ạ?",
+                "Để mình xem giá chính xác theo mẫu và size bạn chọn."
+            ],
+            "action": "lookup_price"
+        },
+        {
+            "tag": "goodbye",
+            "patterns": [
+                "Tạm biệt",
+                "Cảm ơn",
+                "Bye",
+                "Hẹn gặp lại",
+                "Ok cảm ơn"
+            ],
+            "responses": [
+                "Cảm ơn bạn đã ghé shop ⚽, hẹn gặp lại!",
+                "Shop rất vui được hỗ trợ bạn. Chúc bạn một ngày vui vẻ!",
+                "Bye bye 👋, khi nào cần áo bóng đá cứ nhắn mình nhé!"
+            ]
+        },
+        {
+            "tag": "",
+            "patterns": [],
+            "responses": []
+        },
+        {
+            "tag": "",
+            "patterns": [],
+            "responses": []
+        },
+        {
+            "tag": "áo_đtqg_anh__2024_2025",
+            "patterns": [
+                "Áo ĐTQG Anh  2024-2025 giá bao nhiêu",
+                "Cho mình xem Áo ĐTQG Anh  2024-2025",
+                "Áo ĐTQG Anh  2024-2025 có không?"
+            ],
+            "responses": [
+                "Áo ĐTQG Anh  2024-2025 hiện tại giá 346.000 VND.",
+                "Bạn có thể đặt Áo ĐTQG Anh  2024-2025 với giá 346.000 VND."
+            ]
+        },
+        {
+            "tag": "áo_đtqg_arg_2024_2025",
+            "patterns": [
+                "Áo ĐTQG Arg 2024-2025 giá bao nhiêu?",
+                "Cho mình xem Áo ĐTQG Arg 2024-2025",
+                "Áo ĐTQG Arg 2024-2025 có không?"
+            ],
+            "responses": [
+                "Áo ĐTQG Arg 2024-2025 hiện tại giá 385.000 VND.",
+                "Bạn có thể đặt Áo ĐTQG Arg 2024-2025 với giá 385.000 VND."
+            ]
+        },
+        {
+            "tag": "áo_đtqg_thụy_sĩ_2024_2025",
+            "patterns": [
+                "Áo ĐTQG Thụy Sĩ 2024-2025 giá bao nhiêu?",
+                "Cho mình xem Áo ĐTQG Thụy Sĩ 2024-2025",
+                "Áo ĐTQG Thụy Sĩ 2024-2025 có không?"
+            ],
+            "responses": [
+                "Áo ĐTQG Thụy Sĩ 2024-2025 hiện tại giá 330.000 VND.",
+                "Bạn có thể đặt Áo ĐTQG Thụy Sĩ 2024-2025 với giá 330.000 VND."
+            ]
+        },
+        {
+            "tag": "áo_đtqg_việt_nam_2024_2025",
+            "patterns": [
+                "Áo ĐTQG Việt Nam 2024-2025 giá bao nhiêu?",
+                "Cho mình xem Áo ĐTQG Việt Nam 2024-2025",
+                "Áo ĐTQG Việt Nam 2024-2025 có không?"
+            ],
+            "responses": [
+                "Áo ĐTQG Việt Nam 2024-2025 hiện tại giá 489.000 VND.",
+                "Bạn có thể đặt Áo ĐTQG Việt Nam 2024-2025 với giá 489.000 VND."
+            ]
+        },
+        {
+            "tag": "áo_clb_barcelona_2024_2025",
+            "patterns": [
+                "Áo CLB Barcelona 2024-2025 giá bao nhiêu?",
+                "Cho mình xem Áo CLB Barcelona 2024-2025",
+                "Áo CLB Barcelona 2024-2025 có không?"
+            ],
+            "responses": [
+                "Áo CLB Barcelona 2024-2025 hiện tại giá 410.000 VND.",
+                "Bạn có thể đặt Áo CLB Barcelona 2024-2025 với giá 410.000 VND."
+            ]
+        },
+        {
+            "tag": "áo_clb_manchester_united_2024_2025",
+            "patterns": [
+                "Áo CLB Manchester United 2024-2025 giá bao nhiêu?",
+                "Cho mình xem Áo CLB Manchester United 2024-2025",
+                "Áo CLB Manchester United 2024-2025 có không?"
+            ],
+            "responses": [
+                "Áo CLB Manchester United 2024-2025 hiện tại giá 360.000 VND.",
+                "Bạn có thể đặt Áo CLB Manchester United 2024-2025 với giá 360.000 VND."
+            ]
+        },
+        {
+            "tag": "adidas_f50_league_tf___xanh/hồng___if1336",
+            "patterns": [
+                "Adidas F50 League TF - Xanh/Hồng - IF1336 giá bao nhiêu?",
+                "Cho mình xem Adidas F50 League TF - Xanh/Hồng - IF1336",
+                "Adidas F50 League TF - Xanh/Hồng - IF1336 có không?"
+            ],
+            "responses": [
+                "Adidas F50 League TF - Xanh/Hồng - IF1336 hiện tại giá 1.820.000 VND.",
+                "Bạn có thể đặt Adidas F50 League TF - Xanh/Hồng - IF1336 với giá 1.820.000 VND."
+            ]
+        },
+        {
+            "tag": "nike_tiempo_10_academy_tf___xanh_biển___dv4342_400",
+            "patterns": [
+                "Nike Tiempo 10 Academy TF - Xanh biển - DV4342-400 giá bao nhiêu?",
+                "Cho mình xem Nike Tiempo 10 Academy TF - Xanh biển - DV4342-400",
+                "Nike Tiempo 10 Academy TF - Xanh biển - DV4342-400 có không?"
+            ],
+            "responses": [
+                "Nike Tiempo 10 Academy TF - Xanh biển - DV4342-400 hiện tại giá 1.980.000 VND.",
+                "Bạn có thể đặt Nike Tiempo 10 Academy TF - Xanh biển - DV4342-400 với giá 1.980.000 VND."
+            ]
+        },
+        {
+            "tag": "puma_future_ultimate_cage_voltage_pack___vàng/xám_107364_04",
+            "patterns": [
+                "Puma Future Ultimate Cage Voltage Pack - Vàng/Xám 107364 04 giá bao nhiêu?",
+                "Cho mình xem Puma Future Ultimate Cage Voltage Pack - Vàng/Xám 107364 04",
+                "Puma Future Ultimate Cage Voltage Pack - Vàng/Xám 107364 04 có không?"
+            ],
+            "responses": [
+                "Puma Future Ultimate Cage Voltage Pack - Vàng/Xám 107364 04 hiện tại giá 2.250.000 VND.",
+                "Bạn có thể đặt Puma Future Ultimate Cage Voltage Pack - Vàng/Xám 107364 04 với giá 2.250.000 VND."
+            ]
+        },
+        {
+            "tag": "mizuno_morelia_neo_iv_pro_as_(neo_4)___vàng_p1gd243445",
+            "patterns": [
+                "Mizuno Morelia Neo IV Pro AS (Neo 4) - Vàng P1GD243445 giá bao nhiêu?",
+                "Cho mình xem Mizuno Morelia Neo IV Pro AS (Neo 4) - Vàng P1GD243445",
+                "Mizuno Morelia Neo IV Pro AS (Neo 4) - Vàng P1GD243445 có không?"
+            ],
+            "responses": [
+                "Mizuno Morelia Neo IV Pro AS (Neo 4) - Vàng P1GD243445 hiện tại giá 1.999.000 VND.",
+                "Bạn có thể đặt Mizuno Morelia Neo IV Pro AS (Neo 4) - Vàng P1GD243445 với giá 1.999.000 VND."
+            ]
+        },
+        {
+            "tag": "nike_zoom_mercurial_superfly_9_academy_fg/mg___hồng_đen___dj5625_601",
+            "patterns": [
+                "Nike Zoom Mercurial Superfly 9 Academy FG/MG - Hồng đen - DJ5625-601 giá bao nhiêu?",
+                "Cho mình xem Nike Zoom Mercurial Superfly 9 Academy FG/MG - Hồng đen - DJ5625-601",
+                "Nike Zoom Mercurial Superfly 9 Academy FG/MG - Hồng đen - DJ5625-601 có không?"
+            ],
+            "responses": [
+                "Nike Zoom Mercurial Superfly 9 Academy FG/MG - Hồng đen - DJ5625-601 hiện tại giá 2.350.000 VND.",
+                "Bạn có thể đặt Nike Zoom Mercurial Superfly 9 Academy FG/MG - Hồng đen - DJ5625-601 với giá 2.350.000 VND."
+            ]
+        },
+        {
+            "tag": "adidas_predator_accuracy.1_l_fg___cam/đen___gw4574",
+            "patterns": [
+                "Adidas Predator Accuracy.1 L FG - Cam/Đen - GW4574 giá bao nhiêu?",
+                "Cho mình xem Adidas Predator Accuracy.1 L FG - Cam/Đen - GW4574",
+                "Adidas Predator Accuracy.1 L FG - Cam/Đen - GW4574 có không?"
+            ],
+            "responses": [
+                "Adidas Predator Accuracy.1 L FG - Cam/Đen - GW4574 hiện tại giá 3.400.000 VND.",
+                "Bạn có thể đặt Adidas Predator Accuracy.1 L FG - Cam/Đen - GW4574 với giá 3.400.000 VND."
+            ]
+        },
+        {
+            "tag": "áo_đấu_có_chữ_ký_messi",
+            "patterns": [
+                "Áo Đấu có chữ ký messi giá bao nhiêu?",
+                "Cho mình xem Áo Đấu có chữ ký messi",
+                "Áo Đấu có chữ ký messi có không?"
+            ],
+            "responses": [
+                "Áo Đấu có chữ ký messi hiện tại giá 50.000.000.000 VND.",
+                "Bạn có thể đặt Áo Đấu có chữ ký messi với giá 50.000.000.000 VND."
+            ]
+        },
+        {
+            "tag": "áo",
+            "patterns": [
+                "áo giá bao nhiêu?",
+                "Cho mình xem áo",
+                "áo có không?"
+            ],
+            "responses": [
+                "áo hiện tại giá 20.000 VND.",
+                "Bạn có thể đặt áo với giá 20.000 VND."
+            ]
+        },
+        {
+            "tag": "greeting",
+            "patterns": [
+                "Xin chào",
+                "Chào shop",
+                "Hello",
+                "Shop ơi",
+                "Hi",
+                "Có ai ở đó không?",
+                "Chào bạn",
+                "Good morning",
+                "Good afternoon",
+                "Good evening",
+                "Chào buổi sáng",
+                "Chào buổi chiều",
+                "Chào buổi tối",
+                "Hế lô",
+                "Alo shop",
+                "Hey",
+                "Yo",
+                "Chào chủ shop",
+                "Xin chào shop áo bóng đá",
+                "Chào anh chị"
+            ],
+            "responses": [
+                "Xin chào! Shop áo bóng đá có thể giúp gì cho bạn hôm nay?",
+                "Hello, bạn đang quan tâm đến áo CLB hay phụ kiện ạ?",
+                "Chào mừng bạn đến với shop áo bóng đá, mình có thể hỗ trợ gì cho bạn?",
+                "Chào bạn! Shop chuyên cung cấp áo bóng đá chính hãng, bạn cần tư vấn gì không?",
+                "Xin chào! Cảm ơn bạn đã ghé shop, bạn đang tìm áo CLB nào vậy?",
+                "Hello! Shop có đầy đủ áo các CLB nổi tiếng, bạn muốn xem mẫu nào?"
+            ]
+        },
+        {
+            "tag": "product_inquiry",
+            "patterns": [
+                "Có áo bóng đá không?",
+                "Áo CLB có những loại nào?",
+                "Áo đội tuyển có không?",
+                "Áo training",
+                "Áo fan",
+                "Áo player version",
+                "Có áo Real Madrid không?",
+                "Áo Barcelona có không?",
+                "Áo Manchester United",
+                "Áo Liverpool",
+                "Áo Chelsea",
+                "Áo Arsenal",
+                "Áo PSG",
+                "Áo Bayern Munich",
+                "Áo Juventus",
+                "Áo AC Milan",
+                "Áo Inter Milan",
+                "Áo Manchester City",
+                "Áo Tottenham",
+                "Áo Atletico Madrid",
+                "Áo Borussia Dortmund",
+                "Áo Ajax",
+                "Áo Valencia",
+                "Áo Sevilla",
+                "Show me shirts",
+                "Football jerseys",
+                "Soccer shirts"
+            ],
+            "responses": [
+                "Shop hiện có đầy đủ áo CLB châu Âu (MU, Real, Barca, PSG...), áo tuyển quốc gia, áo training và áo fan.",
+                "Có ạ, shop có áo CLB, áo đội tuyển, áo fan phiên bản Player/Fan.",
+                "Bạn muốn xem áo CLB hay áo tuyển quốc gia để mình tư vấn chi tiết hơn?",
+                "Shop có áo chính thức của tất cả CLB lớn: Real, Barca, MU, Liverpool, PSG, Bayern...",
+                "Áo có nhiều phiên bản: Fan version (giá rẻ), Player version (chất lượng cao), áo training",
+                "Bạn quan tâm áo CLB nào cụ thể để mình show hình cho bạn xem?"
+            ]
+        },
+        {
+            "tag": "accessories",
+            "patterns": [
+                "Có phụ kiện bóng đá không?",
+                "Bọc ống đồng",
+                "Găng tay thủ môn",
+                "Bóng size 5",
+                "Bình nước",
+                "Túi đựng giày",
+                "Quần áo bóng đá",
+                "Tất bóng đá",
+                "Băng đội trưởng",
+                "Băng keo",
+                "Giày bóng đá",
+                "Bóng đá size 4",
+                "Cone tập luyện",
+                "Lưới khung thành",
+                "Găng tay thủ môn Adidas",
+                "Găng tay thủ môn Nike",
+                "Găng tay thủ môn Puma",
+                "Bọc ống đồng Nike",
+                "Bọc ống đồng Adidas",
+                "Túi đựng bóng",
+                "Balo thể thao",
+                "Túi gym"
+            ],
+            "responses": [
+                "Shop có đầy đủ phụ kiện: bóng size 4-5, găng tay thủ môn, bọc ống đồng, băng keo, bình nước, túi đựng giày...",
+                "Có bạn nhé! Phụ kiện bóng đá rất đa dạng: túi rút, túi giày, bọc ống đồng, găng thủ môn, bóng thi đấu/training...",
+                "Bạn đang cần phụ kiện nào để mình tư vấn cụ thể hơn ạ?",
+                "Phụ kiện có các hãng: Nike, Adidas, Puma, Umbro... Bạn ưa thích hãng nào?",
+                "Shop có cả bóng da và bóng da tổng hợp, size 3, 4, 5 đều có",
+                "Găng tay thủ môn có nhiều mức giá từ 200k-2tr tùy chất lượng"
+            ]
+        },
+        {
+            "tag": "shipping_info",
+            "patterns": [
+                "Có ship không?",
+                "Giao hàng toàn quốc?",
+                "Freeship không?",
+                "Ship COD không?",
+                "Phí ship bao nhiêu?",
+                "Bao lâu nhận được hàng?",
+                "Giao hàng nhanh không?",
+                "Ship hàng qua đơn vị nào?",
+                "Có giao hàng tận nơi không?",
+                "Ship về tỉnh có không?",
+                "Giao hàng HCM bao lâu?",
+                "Ship về Hà Nội mất bao lâu?",
+                "Giao hàng miền Trung",
+                "Ship về Đà Nẵng",
+                "Giao hàng Cần Thơ"
+            ],
+            "responses": [
+                "Shop giao hàng toàn quốc qua GHN, GHTK. Bạn có thể nhận hàng và thanh toán COD.",
+                "Có ạ, shop hỗ trợ ship toàn quốc. Phí ship từ 20-30k tùy khu vực.",
+                "Shop có freeship theo chương trình khuyến mãi từng thời điểm, bạn cần mình kiểm tra khuyến mãi hiện tại không?",
+                "Giao hàng nội thành 1-2 ngày, ngoại thành 2-3 ngày, tỉnh xa 3-5 ngày",
+                "COD toàn quốc, bạn nhận hàng rồi mới trả tiền, yên tâm 100%",
+                "Shop ship qua GHN, Viettel Post, J&T Express tùy khu vực để nhanh nhất"
+            ]
+        },
+        {
+            "tag": "promotion_sale",
+            "patterns": [
+                "Có khuyến mãi gì?",
+                "Mã giảm giá",
+                "Sale",
+                "Giảm giá áo CLB không?",
+                "Flash sale",
+                "Giảm giá cuối tuần",
+                "Black Friday sale",
+                "Khuyến mãi tháng này",
+                "Voucher giảm giá",
+                "Combo giảm giá",
+                "Mua 2 tặng 1",
+                "Giảm giá sinh viên",
+                "Discount code"
+            ],
+            "responses": [
+                "Hiện tại shop có chương trình giảm 10-20% cho một số mẫu áo CLB.",
+                "Bạn có thể nhập mã **AOBONG10** để được giảm giá thêm khi thanh toán online.",
+                "Shop thường xuyên có flash sale cuối tuần, bạn có muốn mình gửi danh sách áo đang giảm giá không?",
+                "Mua 2 áo được giảm 15%, mua từ 3 áo trở lên giảm 20%",
+                "Sinh viên xuất trình thẻ SV được giảm thêm 5%",
+                "Khách hàng cũ được ưu đãi đặc biệt, bạn đã từng mua ở shop chưa?"
+            ]
+        },
+        {
+            "tag": "size_guide",
+            "patterns": [
+                "Áo có size gì?",
+                "Size áo bóng đá",
+                "Có size S M L XL không?",
+                "Áo vừa cho người 70kg không?",
+                "Size chart",
+                "Bảng size áo",
+                "Tôi cao 1m75 nặng 65kg nên mặc size gì?",
+                "Size XS có không?",
+                "Size XXL có không?",
+                "Áo có co giãn không?",
+                "Size nam và nữ khác nhau không?",
+                "Cách chọn size áo bóng đá"
+            ],
+            "responses": [
+                "Áo có size S-XL. Vòng ngực từ 88-104cm tùy size.",
+                "Có đủ size S, M, L, XL. Bạn cho mình chiều cao và cân nặng, mình tư vấn size chuẩn hơn nhé.",
+                "Nếu bạn cao khoảng 1m70-1m75 và nặng 65-75kg thì thường mặc size L là vừa.",
+                "Size S: 88-92cm, Size M: 92-96cm, Size L: 96-100cm, Size XL: 100-104cm",
+                "Áo có độ co giãn nhẹ, nên có thể mặc vừa thoải mái",
+                "Bạn muốn mặc ôm hay rộng để mình tư vấn size phù hợp?"
+            ]
+        },
+        {
+            "tag": "return_exchange",
+            "patterns": [
+                "Đổi trả thế nào?",
+                "Bao lâu được đổi?",
+                "Chính sách đổi trả",
+                "Đổi size được không?",
+                "Hoàn tiền được không?",
+                "Lỗi hàng đổi như thế nào?",
+                "Không vừa size có đổi được không?",
+                "Thủ tục đổi hàng",
+                "Bảo hành sản phẩm",
+                "Đổi màu áo được không?"
+            ],
+            "responses": [
+                "Shop hỗ trợ đổi hàng trong vòng 7 ngày nếu chưa sử dụng và còn nguyên tag tem.",
+                "Bạn có thể đổi size hoặc đổi mẫu nếu còn hàng. Phí ship đổi trả do khách hàng chịu giúp shop.",
+                "Chính sách đổi trả linh hoạt ạ: đổi size miễn phí nếu hàng bị lỗi hoặc shop gửi nhầm.",
+                "Hoàn tiền 100% nếu hàng lỗi từ phía shop trong vòng 3 ngày",
+                "Đổi màu, đổi mẫu được miễn là còn hàng và sản phẩm chưa sử dụng",
+                "Bạn cần giữ lại hóa đơn và tag áo để đổi trả nhé"
+            ]
+        },
+        {
+            "tag": "payment_methods",
+            "patterns": [
+                "Thanh toán như thế nào?",
+                "Có nhận chuyển khoản không?",
+                "Trả tiền mặt được không?",
+                "Thanh toán online",
+                "ATM card",
+                "Visa card",
+                "MasterCard",
+                "Momo",
+                "ZaloPay",
+                "ViettelPay",
+                "Banking",
+                "QR code thanh toán"
+            ],
+            "responses": [
+                "Shop nhận nhiều hình thức thanh toán: COD, chuyển khoản, Momo, ZaloPay",
+                "Thanh toán online được giảm thêm 2% và ưu tiên giao hàng",
+                "Bạn có thể quét QR Momo/ZaloPay hoặc chuyển khoản ngân hàng",
+                "COD: Nhận hàng trả tiền. Online: Momo, ZaloPay, Banking",
+                "Có hỗ trợ trả góp qua thẻ tín dụng cho đơn từ 1 triệu",
+                "Thông tin TK: Techcombank 19036838984016 - Nguyễn Văn A"
+            ]
+        },
+        {
+            "tag": "club_specific_real_madrid",
+            "patterns": [
+                "Áo Real Madrid",
+                "Real Madrid jersey",
+                "Áo Real mùa này",
+                "Real Madrid 2024",
+                "Áo Benzema",
+                "Áo Vinicius",
+                "Áo Modric Real",
+                "Real Madrid home kit",
+                "Real Madrid away kit",
+                "Real Madrid third kit",
+                "Los Blancos jersey"
+            ],
+            "responses": [
+                "Áo Real Madrid 2024-25 có 3 mẫu: Home (trắng), Away (xám), Third (cam). Giá từ 350-450k",
+                "Real Madrid hiện có áo của Vinicius, Bellingham, Modric, Kroos. Bạn muốn in tên ai?",
+                "Áo Real mùa này rất đẹp, bạn muốn xem ảnh chi tiết không?",
+                "Shop có cả áo cũ và mới của Real, từ mùa 2020 đến 2024",
+                "Áo Real Madrid chính hãng Adidas, chất lượng Player và Fan version"
+            ]
+        },
+        {
+            "tag": "club_specific_barcelona",
+            "patterns": [
+                "Áo Barcelona",
+                "Barca jersey",
+                "FC Barcelona",
+                "Áo Messi Barca cũ",
+                "Áo Lewandowski",
+                "Áo Gavi Barca",
+                "Áo Pedri",
+                "Barcelona home",
+                "Barcelona away",
+                "Blaugrana jersey",
+                "Camp Nou kit"
+            ],
+            "responses": [
+                "Barcelona 2024-25: Home (xanh-đỏ sọc), Away (đen), Third (vàng). Giá 380-480k",
+                "Có áo Lewandowski, Gavi, Pedri, Raphinha. Cũng có áo Messi phiên bản kỷ niệm",
+                "Áo Barca mùa này thiết kế rất đẹp với sponsor mới Spotify",
+                "Shop có đủ size từ S-XL, bạn muốn in tên cầu thủ nào?",
+                "Áo Barca chính hãng Nike, cam kết chất lượng 100%"
+            ]
+        },
+        {
+            "tag": "club_specific_manchester_united",
+            "patterns": [
+                "Áo Manchester United",
+                "MU jersey",
+                "Man United",
+                "Áo Rashford",
+                "Áo Bruno Fernandes MU",
+                "Áo Casemiro",
+                "MU home kit",
+                "MU away kit",
+                "Red Devils jersey",
+                "Old Trafford kit"
+            ],
+            "responses": [
+                "MU 2024-25: Home (đỏ), Away (xanh navy), Third (xanh lá). Giá 360-460k",
+                "Có áo Rashford, Bruno Fernandes, Casemiro, Antony. Tên nào bạn thích?",
+                "Áo MU mùa này có thiết kế cổ điển rất đẹp",
+                "Shop có cả áo retro MU các năm 90s-2000s nếu bạn quan tâm",
+                "MU chính hãng Adidas, chất lượng xuất sắc"
+            ]
+        },
+        {
+            "tag": "club_specific_liverpool",
+            "patterns": [
+                "Áo Liverpool",
+                "LFC jersey",
+                "Liverpool FC",
+                "Áo Salah",
+                "Áo Mané Liverpool",
+                "Áo Van Dijk",
+                "Liverpool home",
+                "Liverpool away",
+                "The Reds jersey",
+                "Anfield kit"
+            ],
+            "responses": [
+                "Liverpool 2024-25: Home (đỏ), Away (xanh lá), Third (vàng). Giá 370-470k",
+                "Có áo Salah, Van Dijk, Diaz, Gakpo. Bạn chọn cầu thủ nào?",
+                "Áo Liverpool mùa này có logo Standard Chartered mới",
+                "Shop có áo Liverpool vô địch Champions League 2019 nếu bạn muốn",
+                "LFC chính hãng Nike, chất lượng đảm bảo"
+            ]
+        },
+        {
+            "tag": "national_team_brazil",
+            "patterns": [
+                "Áo tuyển Brazil",
+                "Brazil jersey",
+                "Áo Neymar Brazil",
+                "Áo Vinicius tuyển Brazil",
+                "Brazil home kit",
+                "Brazil away kit",
+                "Seleção jersey"
+            ],
+            "responses": [
+                "Áo tuyển Brazil: Home (vàng), Away (xanh). Giá 380-450k",
+                "Có áo Neymar, Vinicius, Casemiro tuyển Brazil",
+                "Áo Brazil World Cup 2022 còn không?",
+                "Tuyển Brazil Nike chính hãng, rất đẹp và chất lượng"
+            ]
+        },
+        {
+            "tag": "national_team_argentina",
+            "patterns": [
+                "Áo tuyển Argentina",
+                "Argentina jersey",
+                "Áo Messi Argentina",
+                "Argentina World Cup",
+                "Áo Di Maria Argentina",
+                "Argentina home",
+                "Argentina away"
+            ],
+            "responses": [
+                "Áo Argentina World Cup 2022 vô địch: Home (trắng xanh), Away (tím). Giá 400-500k",
+                "Có áo Messi vô địch World Cup, rất hot hiện tại",
+                "Argentina Adidas chính hãng, thiết kế 3 sọc truyền thống",
+                "Bạn muốn áo có chữ ký Messi in sẵn không?"
+            ]
+        },
+        {
+            "tag": "youth_kids_sizes",
+            "patterns": [
+                "Áo bóng đá trẻ em",
+                "Size trẻ em",
+                "Áo cho bé",
+                "Kids jersey",
+                "Youth size",
+                "Áo bóng đá cho con",
+                "Size nhỏ nhất",
+                "Áo cho bé 10 tuổi",
+                "Áo cho bé 12 tuổi"
+            ],
+            "responses": [
+                "Shop có áo trẻ em size 6-8-10-12-14 tuổi",
+                "Áo trẻ em giá rẻ hơn 20-30k so với áo người lớn",
+                "Bé mấy tuổi, cao bao nhiêu để mình tư vấn size phù hợp?",
+                "Áo trẻ em cũng có đủ các CLB: Real, Barca, MU, Liverpool..."
+            ]
+        },
+        {
+            "tag": "women_football",
+            "patterns": [
+                "Áo bóng đá nữ",
+                "Women jersey",
+                "Áo cho nữ",
+                "Size nữ",
+                "Áo tuyển nữ",
+                "Women's football shirt"
+            ],
+            "responses": [
+                "Shop có áo tuyển nữ và áo CLB phiên bản nữ",
+                "Áo nữ có form ôm hơn, bạn muốn xem mẫu nào?",
+                "Size nữ từ XS-L, tương ứng size nam S-XL",
+                "Có áo tuyển nữ Việt Nam, Mỹ, Anh, Pháp..."
+            ]
+        },
+        {
+            "tag": "goalkeeper_kits",
+            "patterns": [
+                "Áo thủ môn",
+                "Goalkeeper jersey",
+                "GK kit",
+                "Áo thủ thành",
+                "Áo thủ môn Real",
+                "Áo thủ môn Barca",
+                "Goalkeeper gloves"
+            ],
+            "responses": [
+                "Áo thủ môn có nhiều màu: xanh lá, vàng, cam, tím, hồng",
+                "Shop có áo GK của tất cả CLB lớn, giá từ 300-400k",
+                "Kèm theo có găng tay thủ môn chuyên nghiệp",
+                "Áo thủ môn có padding bảo vệ khuỷu tay"
+            ]
+        },
+        {
+            "tag": "retro_vintage",
+            "patterns": [
+                "Áo retro",
+                "Vintage jersey",
+                "Áo cổ điển",
+                "Áo Brazil 1970",
+                "Áo MU 1999",
+                "Arsenal Invincibles",
+                "Áo cũ",
+                "Classic kit"
+            ],
+            "responses": [
+                "Shop có bộ sưu tập áo retro từ những năm 70s-2000s",
+                "Áo vintage rất được ưa chuộng, giá từ 400-600k",
+                "Có áo Brazil 1970, MU treble 1999, Arsenal bất bại...",
+                "Áo retro chất lượng cao, in lụa bền đẹp"
+            ]
+        },
+        {
+            "tag": "training_wear",
+            "patterns": [
+                "Áo training",
+                "Training kit",
+                "Áo tập luyện",
+                "Quần áo tập",
+                "Tracksuit",
+                "Training top",
+                "Pre-match kit"
+            ],
+            "responses": [
+                "Áo training có nhiều mẫu: polo, tay dài, tay ngắn",
+                "Bộ training complete có áo + quần, giá 500-700k",
+                "Chất liệu thoáng mát, thấm hút mồ hôi tốt",
+                "Training kit các CLB Real, Barca, MU, PSG..."
+            ]
+        },
+        {
+            "tag": "special_editions",
+            "patterns": [
+                "Áo đặc biệt",
+                "Limited edition",
+                "Áo giới hạn",
+                "Special kit",
+                "Anniversary jersey",
+                "Áo kỷ niệm"
+            ],
+            "responses": [
+                "Shop có các mẫu áo limited edition đặc biệt",
+                "Áo kỷ niệm Champions League, World Cup...",
+                "Phiên bản giới hạn thường có giá cao hơn 100-200k",
+                "Bạn quan tâm áo kỷ niệm sự kiện nào?"
+            ]
+        },
+        {
+            "tag": "customization",
+            "patterns": [
+                "In tên lên áo",
+                "Customization",
+                "In số áo",
+                "Thêu tên",
+                "In logo",
+                "Personalized jersey",
+                "In chữ lên áo"
+            ],
+            "responses": [
+                "Shop hỗ trợ in tên, số áo miễn phí cho đơn từ 300k",
+                "Có thể in tên tiếng Việt hoặc tiếng Anh",
+                "In số từ 1-99, font chữ chuẩn FIFA",
+                "Thêu logo CLB hoặc logo cá nhân"
+            ]
+        },
+        {
+            "tag": "fabric_quality",
+            "patterns": [
+                "Chất liệu áo",
+                "Vải áo bóng đá",
+                "Quality",
+                "Thun 4 chiều",
+                "Cotton",
+                "Polyester",
+                "Dry-fit",
+                "Chất lượng áo"
+            ],
+            "responses": [
+                "Áo sử dụng vải thun 4 chiều cao cấp, thoáng mát",
+                "Chất liệu polyester + spandex, không co rút khi giặt",
+                "Công nghệ dry-fit thấm hút mồ hôi nhanh",
+                "Fan version: thun thường. Player version: thun cao cấp"
+            ]
+        },
+        {
+            "tag": "care_instructions",
+            "patterns": [
+                "Cách giặt áo",
+                "Bảo quản áo",
+                "Giặt như thế nào?",
+                "Care instructions",
+                "Áo có phai màu không?",
+                "Giặt máy được không?"
+            ],
+            "responses": [
+                "Giặt nước lạnh dưới 30°C, không dùng thuốc tẩy",
+                "Phơi trong bóng râm, không phơi trực tiếp nắng gắt",
+                "Có thể giặt máy ở chế độ nhẹ, không vắt mạnh",
+                "Ủi ở nhiệt độ thấp, tránh ủi trực tiếp lên logo"
+            ]
+        },
+        {
+            "tag": "store_location",
+            "patterns": [
+                "Shop ở đâu?",
+                "Địa chỉ shop",
+                "Có shop offline không?",
+                "Showroom",
+                "Địa điểm bán",
+                "Cửa hàng"
+            ],
+            "responses": [
+                "Shop online chủ yếu, có showroom tại Hà Nội và HCM",
+                "Địa chỉ HN: 123 Phố Huế, Hai Bà Trưng",
+                "Địa chỉ HCM: 456 Nguyễn Trãi, Quận 5",
+                "Bạn có thể đến xem hàng trực tiếp từ 8h-22h hàng ngày"
+            ]
+        },
+        {
+            "tag": "business_hours",
+            "patterns": [
+                "Mấy giờ mở cửa?",
+                "Giờ làm việc",
+                "Shop mở từ mấy giờ?",
+                "Opening hours",
+                "Thời gian hoạt động"
+            ],
+            "responses": [
+                "Shop online hoạt động 24/7, hỗ trợ từ 8h-22h",
+                "Showroom mở từ 8h-22h hàng ngày kể cả cuối tuần",
+                "Chat hỗ trợ từ 8h sáng đến 10h tối",
+                "Đặt hàng online bất cứ lúc nào"
+            ]
+        },
+        {
+            "tag": "wholesale",
+            "patterns": [
+                "Bán sỉ",
+                "Wholesale",
+                "Mua số lượng lớn",
+                "Giá sỉ",
+                "Đặt hàng nhiều",
+                "Bulk order"
+            ],
+            "responses": [
+                "Shop có giá sỉ cho đơn từ 10 áo trở lên",
+                "Mua sỉ giảm 15-25% tùy số lượng",
+                "Hỗ trợ drop shipping cho các shop nhỏ",
+                "Liên hệ trực tiếp để báo giá sỉ chi tiết"
+            ]
+        },
+        {
+            "tag": "competitor_comparison",
+            "patterns": [
+                "So với shop khác",
+                "Tại sao chọn shop này?",
+                "Khác gì shop khác?",
+                "Ưu điểm của shop",
+                "Why choose us?"
+            ],
+            "responses": [
+                "Shop cam kết hàng chính hãng 100%, giá cả cạnh tranh",
+                "Chính sách đổi trả 7 ngày, hỗ trợ 24/7",
+                "Có showroom để khách xem hàng trực tiếp",
+                "Giao hàng nhanh, đóng gói cẩn thận",
+                "Đội ngũ tư vấn chuyên nghiệp, am hiểu bóng đá"
+            ]
+        },
+        {
+            "tag": "authenticity_guarantee",
+            "patterns": [
+                "Hàng thật hay fake?",
+                "Authentic",
+                "Chính hãng không?",
+                "Hàng replica",
+                "Original jersey",
+                "Genuine product"
+            ],
+            "responses": [
+                "Shop cam kết 100% hàng chính hãng, có tem chống giả",
+                "Hoàn tiền 200% nếu phát hiện hàng fake",
+                "Nhập trực tiếp từ nhà phân phối chính thức",
+                "Có thể kiểm tra mã vạch trên website hãng",
+                "Shop chỉ bán hàng authentic, không bán replica"
+            ]
+        },
+        {
+            "tag": "seasonal_collections",
+            "patterns": [
+                "Áo mùa hè",
+                "Summer kit",
+                "Áo mùa đông",
+                "Winter collection",
+                "Áo Champions League",
+                "Europa League kit",
+                "World Cup jersey"
+            ],
+            "responses": [
+                "Mùa hè có áo cotton mỏng, thoáng mát",
+                "Mùa đông có áo tay dài, chất dày hơn",
+                "Collection Champions League 2024 đã về",
+                "Áo World Cup 2026 sẽ ra mắt năm sau",
+                "Mỗi mùa giải có thiết kế riêng biệt"
+            ]
+        },
+        {
+            "tag": "gift_wrapping",
+            "patterns": [
+                "Gói quà",
+                "Gift wrapping",
+                "Quà tặng",
+                "Birthday gift",
+                "Tặng bạn gái",
+                "Tặng con trai"
+            ],
+            "responses": [
+                "Shop hỗ trợ gói quà miễn phí cho đơn từ 500k",
+                "Có hộp quà đẹp và thiệp chúc mừng",
+                "Gói quà sinh nhật, valentine đều ok",
+                "Bạn muốn ghi lời nhắn gì lên thiệp không?"
+            ]
+        },
+        {
+            "tag": "team_building",
+            "patterns": [
+                "Áo team building",
+                "Đồng phục đội bóng",
+                "Team jersey",
+                "Company team",
+                "Đồng phục công ty"
+            ],
+            "responses": [
+                "Shop nhận làm áo đồng phục theo yêu cầu",
+                "In logo công ty, tên nhân viên miễn phí",
+                "Giá ưu đãi cho đơn đồng phục từ 20 áo",
+                "Thiết kế theo brand guideline của công ty"
+            ]
+        },
+        {
+            "tag": "football_boots",
+            "patterns": [
+                "Giày bóng đá",
+                "Football boots",
+                "Soccer cleats",
+                "Giày Nike",
+                "Giày Adidas",
+                "Giày Puma",
+                "Mercurial",
+                "Predator",
+                "Tiempo"
+            ],
+            "responses": [
+                "Shop có đầy đủ giày bóng đá các hãng: Nike, Adidas, Puma, Mizuno",
+                "Giày FG (sân cỏ tự nhiên), TF (sân cỏ nhân tạo), IC (sân futsal)",
+                "Mercurial cho tốc độ, Predator cho sức mạnh, Tiempo cho kỹ thuật",
+                "Size giày từ 38-45, có size nữ và trẻ em",
+                "Giá từ 800k-5tr tùy mẫu và chất lượng"
+            ]
+        },
+        {
+            "tag": "injury_prevention",
+            "patterns": [
+                "Bảo vệ chân",
+                "Shin pads",
+                "Bảo vệ ống đồng",
+                "Ankle support",
+                "Knee pads"
+            ],
+            "responses": [
+                "Shop có đầy đủ dụng cụ bảo vệ: bảo vệ ống đồng, gối, cổ chân",
+                "Bảo vệ ống đồng Nike, Adidas từ 100k-500k",
+                "Băng cổ chân, băng đầu gối chuyên dụng",
+                "Tất nén cải thiện lưu thông máu"
+            ]
+        },
+        {
+            "tag": "referee_equipment",
+            "patterns": [
+                "Đồ trọng tài",
+                "Referee kit",
+                "Còi trọng tài",
+                "Thẻ vàng đỏ",
+                "Áo trọng tài"
+            ],
+            "responses": [
+                "Shop có bộ đồ trọng tài: áo, quần, tất, còi, thẻ",
+                "Áo trọng tài màu vàng, đen, xanh theo chuẩn FIFA",
+                "Còi Fox 40, thẻ vàng/đỏ chính thức",
+                "Bộ hoàn chỉnh giá 500k"
+            ]
+        },
+        {
+            "tag": "coaching_equipment",
+            "patterns": [
+                "Đồ dùng HLV",
+                "Coaching equipment",
+                "Bảng chiến thuật",
+                "Cone tập luyện",
+                "Marker cones"
+            ],
+            "responses": [
+                "Shop có thiết bị tập luyện: cone, bảng chiến thuật, còi HLV",
+                "Bảng chiến thuật từ tính, dễ sử dụng",
+                "Cone nhiều màu, nhiều size cho các bài tập",
+                "Thang tốc độ, rào tập luyện chuyên nghiệp"
+            ]
+        },
+        {
+            "tag": "football_balls",
+            "patterns": [
+                "Bóng đá",
+                "Football",
+                "Soccer ball",
+                "Bóng size 5",
+                "Bóng size 4",
+                "Bóng size 3",
+                "Match ball",
+                "Training ball"
+            ],
+            "responses": [
+                "Shop có bóng đá size 3, 4, 5 các hãng Nike, Adidas, Molten",
+                "Size 5: Người lớn thi đấu. Size 4: U15. Size 3: Trẻ em",
+                "Bóng da thật và da tổng hợp, từ 200k-2tr",
+                "Bóng FIFA Quality Pro cho thi đấu chuyên nghiệp",
+                "Bóng training giá rẻ cho tập luyện hàng ngày"
+            ]
+        },
+        {
+            "tag": "team_specific_psg",
+            "patterns": [
+                "Áo PSG",
+                "Paris Saint-Germain",
+                "PSG jersey",
+                "Áo Mbappe PSG",
+                "Áo Neymar PSG",
+                "Áo Messi PSG"
+            ],
+            "responses": [
+                "PSG 2024-25: Home (xanh navy), Away (trắng), Third (hồng)",
+                "Có áo Mbappe, Neymar, Messi phiên bản PSG",
+                "Áo PSG Jordan collaboration rất đặc biệt",
+                "Giá từ 380-480k tùy phiên bản"
+            ]
+        },
+        {
+            "tag": "team_specific_bayern",
+            "patterns": [
+                "Áo Bayern Munich",
+                "Bayern jersey",
+                "Áo Lewandowski Bayern",
+                "Áo Muller Bayern",
+                "Bayern home kit"
+            ],
+            "responses": [
+                "Bayern Munich 2024-25: Home (đỏ), Away (trắng), Third (xanh)",
+                "Có áo Muller, Neuer, Kane mùa mới",
+                "Bayern Adidas chính hãng, chất lượng tuyệt vời",
+                "Giá từ 370-470k"
+            ]
+        },
+        {
+            "tag": "team_specific_juventus",
+            "patterns": [
+                "Áo Juventus",
+                "Juve jersey",
+                "Áo Ronaldo Juve cũ",
+                "Juventus home",
+                "Old Lady kit"
+            ],
+            "responses": [
+                "Juventus 2024-25: Home (sọc đen trắng), Away (xanh), Third (vàng)",
+                "Có áo Ronaldo phiên bản kỷ niệm",
+                "Juventus Adidas thiết kế sọc truyền thống",
+                "Giá từ 360-460k"
+            ]
+        },
+        {
+            "tag": "team_specific_chelsea",
+            "patterns": [
+                "Áo Chelsea",
+                "Chelsea FC",
+                "Blues jersey",
+                "Áo Hazard Chelsea cũ",
+                "Chelsea home kit"
+            ],
+            "responses": [
+                "Chelsea 2024-25: Home (xanh), Away (đen), Third (trắng)",
+                "Có áo các huyền thoại như Lampard, Terry",
+                "Chelsea Nike chất lượng cao",
+                "Giá từ 360-460k"
+            ]
+        },
+        {
+            "tag": "team_specific_arsenal",
+            "patterns": [
+                "Áo Arsenal",
+                "Arsenal FC",
+                "Gunners jersey",
+                "Áo Ozil Arsenal",
+                "Arsenal home kit",
+                "Invincibles kit"
+            ],
+            "responses": [
+                "Arsenal 2024-25: Home (đỏ), Away (đen), Third (xanh)",
+                "Có áo Invincibles 2003-04 rất hot",
+                "Arsenal Adidas thiết kế cannon logo",
+                "Giá từ 360-460k"
+            ]
+        },
+        {
+            "tag": "world_cup_jerseys",
+            "patterns": [
+                "Áo World Cup",
+                "World Cup jersey",
+                "Áo World Cup 2022",
+                "Áo World Cup 2026",
+                "FIFA World Cup kit"
+            ],
+            "responses": [
+                "Có áo World Cup 2022 các đội: Argentina, Brazil, France, Morocco...",
+                "World Cup 2026 sẽ có thiết kế mới, chưa ra mắt",
+                "Áo World Cup có logo FIFA chính thức",
+                "Giá từ 400-500k tùy đội tuyển"
+            ]
+        },
+        {
+            "tag": "euro_championships",
+            "patterns": [
+                "Áo Euro",
+                "Euro 2024",
+                "European Championship",
+                "Áo Euro Anh",
+                "Áo Euro Pháp",
+                "Euro kit"
+            ],
+            "responses": [
+                "Euro 2024 có áo tất cả 24 đội tham dự",
+                "Anh, Pháp, Đức, Tây Ban Nha... đều có",
+                "Thiết kế đặc biệt cho giải Euro",
+                "Giá từ 380-480k"
+            ]
+        },
+        {
+            "tag": "copa_america",
+            "patterns": [
+                "Áo Copa America",
+                "Copa America jersey",
+                "Áo Copa Brazil",
+                "Áo Copa Argentina"
+            ],
+            "responses": [
+                "Copa America 2024 có áo Brazil, Argentina, Uruguay...",
+                "Thiết kế Nam Mỹ rất đặc sắc",
+                "Brazil và Argentina là hai mẫu bán chạy nhất",
+                "Giá từ 380-480k"
+            ]
+        },
+        {
+            "tag": "asian_teams",
+            "patterns": [
+                "Áo tuyển Nhật",
+                "Áo tuyển Hàn Quốc",
+                "Japan jersey",
+                "South Korea kit",
+                "Asian national team"
+            ],
+            "responses": [
+                "Có áo tuyển châu Á: Nhật, Hàn Quốc, Australia, Iran...",
+                "Nhật Bản Adidas xanh truyền thống rất đẹp",
+                "Hàn Quốc Nike đỏ nổi bật",
+                "Giá từ 350-450k"
+            ]
+        },
+        {
+            "tag": "african_teams",
+            "patterns": [
+                "Áo tuyển Morocco",
+                "Áo tuyển Nigeria",
+                "Africa jersey",
+                "Morocco kit",
+                "Nigeria kit"
+            ],
+            "responses": [
+                "Có áo tuyển châu Phi: Morocco, Nigeria, Senegal, Ghana...",
+                "Morocco World Cup 2022 rất hot sau thành tích",
+                "Nigeria có thiết kế độc đáo nhất châu Phi",
+                "Giá từ 330-430k"
+            ]
+        },
+        {
+            "tag": "premier_league_patches",
+            "patterns": [
+                "Logo Premier League",
+                "EPL patch",
+                "Premier League sleeve",
+                "Patch Champions League"
+            ],
+            "responses": [
+                "Shop có patch Premier League, Champions League, La Liga...",
+                "Patch chính thức giống như trên sân",
+                "Có thể thêm patch vào áo có sẵn",
+                "Phí thêm patch 50k/cái"
+            ]
+        },
+        {
+            "tag": "font_printing",
+            "patterns": [
+                "Font chữ in áo",
+                "Kiểu chữ",
+                "Font Premier League",
+                "Font La Liga",
+                "Font Champions League"
+            ],
+            "responses": [
+                "Shop có font chữ chính thức các giải: EPL, La Liga, Serie A...",
+                "Font Premier League, Champions League như trên TV",
+                "Có thể in tên và số theo yêu cầu",
+                "Font chữ sắc nét, bền màu"
+            ]
+        },
+        {
+            "tag": "social_media",
+            "patterns": [
+                "Facebook shop",
+                "Instagram",
+                "TikTok",
+                "Zalo",
+                "Social media"
+            ],
+            "responses": [
+                "Follow shop trên Facebook: ShopAoBongDa Official",
+                "Instagram: @shopaobd - cập nhật mẫu mới hàng ngày",
+                "TikTok: Xem video review sản phẩm",
+                "Zalo: 0123456789 để tư vấn nhanh"
+            ]
+        },
+        {
+            "tag": "reviews_testimonials",
+            "patterns": [
+                "Review sản phẩm",
+                "Đánh giá",
+                "Testimonial",
+                "Khách hàng nói gì",
+                "Feedback"
+            ],
+            "responses": [
+                "Shop có 4.8/5 sao trên Facebook với 2000+ review",
+                "99% khách hàng hài lòng về chất lượng",
+                "Có thể xem review trên Shopee, Lazada",
+                "Khách VIP được ưu tiên tư vấn riêng"
+            ]
+        },
+        {
+            "tag": "loyalty_program",
+            "patterns": [
+                "Thành viên VIP",
+                "Loyalty program",
+                "Tích điểm",
+                "Khách hàng thân thiết",
+                "Member benefits"
+            ],
+            "responses": [
+                "Khách mua từ 3tr trở lên được làm VIP",
+                "VIP được giảm 5% mọi đơn hàng",
+                "Ưu tiên xem hàng mới trước",
+                "Sinh nhật được tặng voucher 200k"
+            ]
+        },
+        {
+            "tag": "seasonal_sales",
+            "patterns": [
+                "Sale cuối năm",
+                "Giảm giá Tết",
+                "Black Friday",
+                "11.11 sale",
+                "12.12 sale"
+            ],
+            "responses": [
+                "Cuối năm giảm đến 50% nhiều mẫu",
+                "Black Friday giảm sốc 1 ngày",
+                "11.11 và 12.12 flash sale hourly",
+                "Tết có combo quà tặng đặc biệt"
+            ]
+        },
+        {
+            "tag": "pre_order",
+            "patterns": [
+                "Đặt trước",
+                "Pre-order",
+                "Book trước",
+                "Order trước mùa giải"
+            ],
+            "responses": [
+                "Có thể đặt trước áo mùa giải mới",
+                "Pre-order giảm 10% và giao đầu tiên",
+                "Đặt cọc 100k, thanh toán khi nhận hàng",
+                "Thông báo ngay khi hàng về"
+            ]
+        },
+        {
+            "tag": "international_shipping",
+            "patterns": [
+                "Ship quốc tế",
+                "Giao hàng ra nước ngoài",
+                "International delivery",
+                "Ship to USA",
+                "Ship to Europe"
+            ],
+            "responses": [
+                "Shop hỗ trợ ship quốc tế qua DHL, FedEx",
+                "Ship USA, Europe, Australia đều được",
+                "Phí ship quốc tế từ 500k tùy nước",
+                "Thời gian 7-14 ngày"
+            ]
+        },
+        {
+            "tag": "group_orders",
+            "patterns": [
+                "Đặt nhóm",
+                "Group order",
+                "Cùng bạn đặt",
+                "Gộp đơn"
+            ],
+            "responses": [
+                "Nhóm từ 5 người được giảm 10%",
+                "Gộp đơn để tiết kiệm ship",
+                "Một người đại diện nhận hàng",
+                "Thanh toán riêng cho từng người cũng được"
+            ]
+        },
+        {
+            "tag": "student_discount",
+            "patterns": [
+                "Giảm giá sinh viên",
+                "Student discount",
+                "Ưu đãi học sinh",
+                "Student ID discount"
+            ],
+            "responses": [
+                "Sinh viên có thẻ SV được giảm 5%",
+                "Áp dụng cho cả học sinh THPT",
+                "Chụp ảnh thẻ SV gửi shop để xác minh",
+                "Ưu đãi này áp dụng cả năm"
+            ]
+        },
+        {
+            "tag": "military_discount",
+            "patterns": [
+                "Giảm giá quân đội",
+                "Military discount",
+                "Ưu đãi công an",
+                "Bộ đội giảm giá"
+            ],
+            "responses": [
+                "Quân nhân, công an được giảm 8%",
+                "Xuất trình thẻ ngành để được ưu đãi",
+                "Cảm ơn các anh chị bảo vệ tổ quốc",
+                "Có thể kết hợp với ưu đãi khác"
+            ]
+        },
+        {
+            "tag": "corporate_orders",
+            "patterns": [
+                "Đặt hàng công ty",
+                "Corporate order",
+                "Hóa đơn VAT",
+                "Công ty đặt hàng"
+            ],
+            "responses": [
+                "Shop nhận đơn hàng doanh nghiệp",
+                "Xuất hóa đơn VAT đầy đủ",
+                "Có hỗ trợ công nợ cho khách lớn",
+                "Tư vấn thiết kế logo công ty"
+            ]
+        },
+        {
+            "tag": "event_sponsorship",
+            "patterns": [
+                "Tài trợ sự kiện",
+                "Sponsorship",
+                "Đồng hành giải đấu",
+                "Support tournament"
+            ],
+            "responses": [
+                "Shop tài trợ các giải bóng đá phong trào",
+                "Giảm giá đặc biệt cho BTC giải đấu",
+                "Có thể in logo giải lên áo",
+                "Liên hệ để thảo luận chi tiết"
+            ]
+        },
+        {
+            "tag": "technology_features",
+            "patterns": [
+                "Công nghệ vải",
+                "Dri-FIT",
+                "AeroReady",
+                "ClimaCool",
+                "Technology features"
+            ],
+            "responses": [
+                "Nike Dri-FIT: Thấm hút mồ hôi nhanh",
+                "Adidas AeroReady: Thoáng khí tối ưu",
+                "Công nghệ ClimaCool giữ cơ thể mát",
+                "Vải kháng khuẩn, chống mùi"
+            ]
+        },
+        {
+            "tag": "eco_friendly",
+            "patterns": [
+                "Thân thiện môi trường",
+                "Eco-friendly",
+                "Tái chế",
+                "Sustainable fashion",
+                "Green products"
+            ],
+            "responses": [
+                "Một số áo làm từ chai nhựa tái chế",
+                "Adidas cam kết sản xuất bền vững",
+                "Nike Move to Zero - không phát thải carbon",
+                "Đóng góp bảo vệ môi trường qua thời trang"
+            ]
+        },
+        {
+            "tag": "limited_time_offers",
+            "patterns": [
+                "Ưu đãi có thời hạn",
+                "Limited time offer",
+                "Flash deal",
+                "Giảm giá trong ngày",
+                "Today only"
+            ],
+            "responses": [
+                "Flash sale 2 tiếng: 13h-15h giảm 30%",
+                "Hôm nay mua 2 tặng 1 phụ kiện",
+                "Còn 3 ngày cuối tháng giảm giá",
+                "Nhanh tay kẻo lỡ ưu đãi!"
+            ]
+        },
+        {
+            "tag": "bundle_deals",
+            "patterns": [
+                "Combo sản phẩm",
+                "Bundle deals",
+                "Mua kèm giảm giá",
+                "Package deal",
+                "Set sản phẩm"
+            ],
+            "responses": [
+                "Combo áo + quần + tất = 500k",
+                "Mua áo tặng bọc ống đồng",
+                "Set đồ hoàn chỉnh giá ưu đãi",
+                "Bundle càng nhiều càng rẻ"
+            ]
+        },
+        {
+            "tag": "new_arrivals",
+            "patterns": [
+                "Hàng mới về",
+                "New arrivals",
+                "Mẫu mới nhất",
+                "Latest collection",
+                "Just in"
+            ],
+            "responses": [
+                "Vừa về áo mùa giải 2024-25",
+                "Collection mới nhất từ Nike, Adidas",
+                "Update hàng mới hàng tuần",
+                "Follow để biết hàng mới sớm nhất"
+            ]
+        },
+        {
+            "tag": "best_sellers",
+            "patterns": [
+                "Bán chạy nhất",
+                "Best sellers",
+                "Top selling",
+                "Popular items",
+                "Most ordered"
+            ],
+            "responses": [
+                "Top 3: Real Madrid, Barcelona, MU",
+                "Áo Messi Argentina bán chạy nhất năm",
+                "Size L được chọn nhiều nhất",
+                "Player version được ưa chuộng hơn"
+            ]
+        },
+        {
+            "tag": "gift_certificates",
+            "patterns": [
+                "Gift voucher",
+                "Phiếu quà tặng",
+                "Gift card",
+                "Voucher tặng"
+            ],
+            "responses": [
+                "Shop có phiếu quà tặng 200k, 500k, 1tr",
+                "Gift voucher không thời hạn",
+                "Quà tặng ý nghĩa cho người yêu bóng đá",
+                "Có thể mua online và gửi qua email"
+            ]
+        },
+        {
+            "tag": "fabric_care_advanced",
+            "patterns": [
+                "Làm mềm vải",
+                "Fabric softener",
+                "Bảo quản lâu dài",
+                "Giữ form áo",
+                "Anti-wrinkle"
+            ],
+            "responses": [
+                "Dùng nước xả vải nhẹ, không chứa chất tẩy",
+                "Phơi ngược mặt trong để bảo vệ logo",
+                "Cất trong tủ, treo móc để giữ form",
+                "Không ủi trực tiếp lên số áo và tên"
+            ]
+        },
+        {
+            "tag": "sizing_exchanges",
+            "patterns": [
+                "Đổi size miễn phí",
+                "Free size exchange",
+                "Size không vừa",
+                "Wrong size"
+            ],
+            "responses": [
+                "Đổi size miễn phí trong 7 ngày",
+                "Giữ nguyên tag và hóa đơn",
+                "Áo chưa giặt và chưa sử dụng",
+                "Ship đổi size shop chịu phí một chiều"
+            ]
+        },
+        {
+            "tag": "color_variations",
+            "patterns": [
+                "Màu sắc có sẵn",
+                "Available colors",
+                "Màu khác",
+                "Color options",
+                "Different colors"
+            ],
+            "responses": [
+                "Mỗi CLB có 3-4 màu: home, away, third, GK",
+                "Real: trắng, xám, cam. Barca: xanh-đỏ, đen, vàng",
+                "MU: đỏ, xanh navy, xanh lá",
+                "Bạn thích màu nào để mình check còn hàng?"
+            ]
+        },
+        {
+            "tag": "personalization_services",
+            "patterns": [
+                "Cá nhân hóa áo",
+                "Personalization",
+                "Custom jersey",
+                "Make it personal",
+                "Own design"
+            ],
+            "responses": [
+                "In tên riêng, số áo theo ý muốn",
+                "Có thể thiết kế áo theo yêu cầu",
+                "Logo, slogan cá nhân đều ok",
+                "Phí thiết kế riêng từ 200k"
+            ]
+        },
+        {
+            "tag": "match_worn_replicas",
+            "patterns": [
+                "Áo giống trên sân",
+                "Match worn",
+                "Player issue",
+                "On-pitch version",
+                "Game worn style"
+            ],
+            "responses": [
+                "Player version giống 100% áo trên sân",
+                "Chất liệu, form dáng như cầu thủ mặc",
+                "Giá cao hơn fan version 100-150k",
+                "Chất lượng professional, rất đáng đầu tư"
+            ]
+        },
+        {
+            "tag": "historical_jerseys",
+            "patterns": [
+                "Áo lịch sử",
+                "Historical jerseys",
+                "Classic designs",
+                "Throwback jerseys",
+                "Heritage kits"
+            ],
+            "responses": [
+                "Collection áo lịch sử các CLB nổi tiếng",
+                "MU 1968, Liverpool 1984, Arsenal 1989...",
+                "Tái hiện những khoảnh khắc vĩ đại",
+                "Giá từ 450-650k cho áo retro chất lượng cao"
+            ]
+        },
+        {
+            "tag": "weather_appropriate",
+            "patterns": [
+                "Áo theo thời tiết",
+                "Weather appropriate",
+                "Mùa mưa mặc gì",
+                "Summer jersey",
+                "Winter kit"
+            ],
+            "responses": [
+                "Mùa hè: vải mỏng, thoáng khí",
+                "Mùa mưa: vải nhanh khô, không thấm nước",
+                "Mùa đông: áo tay dài, chất dày ấm",
+                "Vải công nghệ thích ứng mọi thời tiết"
+            ]
+        },
+        {
+            "tag": "professional_leagues",
+            "patterns": [
+                "Giải chuyên nghiệp",
+                "Professional leagues",
+                "Premier League kit",
+                "La Liga jersey",
+                "Serie A shirt",
+                "Bundesliga kit"
+            ],
+            "responses": [
+                "Áo chính thức các giải: EPL, La Liga, Serie A, Bundesliga",
+                "Có patch logo giải đấu chính thức",
+                "Thiết kế theo chuẩn FIFA cho từng giải",
+                "Font chữ và số theo quy định liên đoàn"
+            ]
+        },
+        {
+            "tag": "youth_development",
+            "patterns": [
+                "Áo lò đào tạo",
+                "Youth academy kit",
+                "La Masia jersey",
+                "Academy shirt",
+                "Development kit"
+            ],
+            "responses": [
+                "Áo lò đào tạo La Masia, Cobham, Carrington...",
+                "Thiết kế dành riêng cho học viện bóng đá",
+                "Chất lượng phù hợp cho tập luyện thường xuyên",
+                "Giá ưu đãi cho các CLB trẻ"
+            ]
+        },
+        {
+            "tag": "disability_inclusive",
+            "patterns": [
+                "Áo cho người khuyết tật",
+                "Adaptive clothing",
+                "Inclusive design",
+                "Wheelchair accessible",
+                "Special needs"
+            ],
+            "responses": [
+                "Shop hỗ trợ thiết kế áo cho người khuyết tật",
+                "Áo dễ mặc cho người ngồi xe lăn",
+                "Thiết kế inclusive cho mọi người",
+                "Tư vấn riêng để phù hợp nhu cầu đặc biệt"
+            ]
+        },
+        {
+            "tag": "virtual_try_on",
+            "patterns": [
+                "Thử áo ảo",
+                "Virtual try-on",
+                "AR fitting",
+                "Online fitting room",
+                "Try before buy"
+            ],
+            "responses": [
+                "Sắp có tính năng thử áo bằng AR",
+                "Gửi ảnh để shop photoshop áo lên người",
+                "Video call để xem áo trực tiếp",
+                "Công nghệ thử áo online đang phát triển"
+            ]
+        },
+        {
+            "tag": "subscription_service",
+            "patterns": [
+                "Đăng ký nhận áo",
+                "Subscription box",
+                "Monthly jersey",
+                "Quarterly delivery",
+                "Jersey subscription"
+            ],
+            "responses": [
+                "Dịch vụ đăng ký: mỗi tháng 1 áo mới",
+                "Gói 3 tháng, 6 tháng, 12 tháng",
+                "Giảm giá đến 25% cho gói subscription",
+                "Surprise box với áo độc quyền"
+            ]
+        },
+        {
+            "tag": "investment_collectibles",
+            "patterns": [
+                "Áo sưu tập",
+                "Collectible jerseys",
+                "Investment pieces",
+                "Rare jerseys",
+                "Limited edition value"
+            ],
+            "responses": [
+                "Áo limited edition có giá trị sưu tập cao",
+                "Áo có chữ ký tăng giá theo thời gian",
+                "Match-worn jerseys là khoản đầu tư tốt",
+                "Tư vấn áo nào có tiềm năng tăng giá"
+            ]
+        },
+        {
+            "tag": "cultural_significance",
+            "patterns": [
+                "Ý nghĩa văn hóa",
+                "Cultural meaning",
+                "Traditional design",
+                "Heritage value",
+                "Symbolic jerseys"
+            ],
+            "responses": [
+                "Mỗi áo CLB mang ý nghĩa văn hóa riêng",
+                "Barcelona: Catalonia pride, Real: Spanish royalty",
+                "Áo tuyển quốc gia thể hiện bản sắc dân tộc",
+                "Màu sắc và logo có ý nghĩa lịch sử sâu sắc"
+            ]
+        },
+        {
+            "tag": "manufacturing_process",
+            "patterns": [
+                "Quy trình sản xuất",
+                "How it's made",
+                "Manufacturing",
+                "Production process",
+                "Made where"
+            ],
+            "responses": [
+                "Áo được sản xuất tại các nhà máy Nike, Adidas ở châu Á",
+                "Quy trình kiểm soát chất lượng nghiêm ngặt",
+                "Từ thiết kế đến thành phẩm mất 6-8 tháng",
+                "Sử dụng công nghệ cắt laser, may tự động"
+            ]
+        },
+        {
+            "tag": "esports_gaming",
+            "patterns": [
+                "Áo esports",
+                "Gaming jersey",
+                "FIFA jersey",
+                "Esports team",
+                "Gaming apparel"
+            ],
+            "responses": [
+                "Shop có áo các đội esports FIFA nổi tiếng",
+                "Áo gaming với thiết kế futuristic",
+                "Kết hợp bóng đá thật và bóng đá ảo",
+                "Dành cho game thủ yêu bóng đá"
+            ]
+        },
+        {
+            "tag": "fitness_performance",
+            "patterns": [
+                "Áo tập gym",
+                "Fitness wear",
+                "Performance shirt",
+                "Training performance",
+                "Athletic wear"
+            ],
+            "responses": [
+                "Áo training phù hợp cho gym, chạy bộ",
+                "Vải thấm hút mồ hôi, co giãn 4 chiều",
+                "Thoáng khí tối ưu cho hoạt động mạnh",
+                "Form ôm giúp tăng hiệu suất vận động"
+            ]
+        },
+        {
+            "tag": "sustainability_ethics",
+            "patterns": [
+                "Sản xuất bền vững",
+                "Ethical production",
+                "Fair trade",
+                "Sustainable fashion",
+                "Environmental impact"
+            ],
+            "responses": [
+                "Các hãng cam kết sản xuất bền vững",
+                "Sử dụng năng lượng tái tạo trong sản xuất",
+                "Fair trade đảm bảo quyền lợi công nhân",
+                "Giảm thiểu tác động môi trường"
+            ]
+        },
+        {
+            "tag": "medical_benefits",
+            "patterns": [
+                "Lợi ích sức khỏe",
+                "Health benefits",
+                "Medical grade",
+                "Antibacterial fabric",
+                "UV protection"
+            ],
+            "responses": [
+                "Vải kháng khuẩn, chống mùi hôi",
+                "Bảo vệ khỏi tia UV có hại",
+                "Tăng lưu thông máu nhờ compression",
+                "Giảm chấn thương nhờ padding"
+            ]
+        },
+        {
+            "tag": "fashion_trends",
+            "patterns": [
+                "Xu hướng thời trang",
+                "Fashion trends",
+                "Street style",
+                "Casual wear",
+                "Fashion forward"
+            ],
+            "responses": [
+                "Áo bóng đá đang là trend streetwear",
+                "Phối với jeans, shorts rất thời trang",
+                "Celebrities thường mặc áo bóng đá ra phố",
+                "Kết hợp áo vintage với phụ kiện hiện đại"
+            ]
+        },
+        {
+            "tag": "technical_specifications",
+            "patterns": [
+                "Thông số kỹ thuật",
+                "Technical specs",
+                "Fabric composition",
+                "Weight",
+                "Dimensions"
+            ],
+            "responses": [
+                "Polyester 100% hoặc poly-cotton blend",
+                "Trọng lượng: 150-180g tùy loại",
+                "Độ dày vải: 0.5-0.8mm",
+                "Khả năng co giãn: 15-20% theo chiều ngang"
+            ]
+        },
+        {
+            "tag": "celebrity_endorsements",
+            "patterns": [
+                "Sao nổi tiếng mặc",
+                "Celebrity wearing",
+                "Famous people",
+                "Influencer style",
+                "Star endorsement"
+            ],
+            "responses": [
+                "Nhiều sao Việt mặc áo bóng đá đi sự kiện",
+                "Influencers thường review áo của shop",
+                "Sơn Tùng, Đen Vâu từng mặc áo Real, Barca",
+                "Trend được các nghệ sĩ yêu thích"
+            ]
+        },
+        {
+            "tag": "mental_health_community",
+            "patterns": [
+                "Cộng đồng fan",
+                "Mental health support",
+                "Fan community",
+                "Social connection",
+                "Belonging"
+            ],
+            "responses": [
+                "Mặc áo tạo kết nối với fan khác",
+                "Cảm giác thuộc về một cộng đồng lớn",
+                "Chia sẻ niềm đam mê bóng đá",
+                "Group chat fan các CLB rất sôi động"
+            ]
+        },
+        {
+            "tag": "educational_content",
+            "patterns": [
+                "Lịch sử CLB",
+                "Education about teams",
+                "Learn about football",
+                "Team history",
+                "Football knowledge"
+            ],
+            "responses": [
+                "Mỗi áo đều có câu chuyện lịch sử đằng sau",
+                "Shop chia sẻ kiến thức về các CLB",
+                "Hiểu thêm về ý nghĩa logo, màu sắc",
+                "Blog về lịch sử bóng đá thế giới"
+            ]
+        },
+        {
+            "tag": "data_privacy",
+            "patterns": [
+                "Bảo mật thông tin",
+                "Privacy policy",
+                "Data protection",
+                "Personal information",
+                "Security"
+            ],
+            "responses": [
+                "Shop cam kết bảo mật 100% thông tin khách hàng",
+                "Không chia sẻ dữ liệu cho bên thứ ba",
+                "Thanh toán an toàn qua cổng bảo mật SSL",
+                "Tuân thủ luật bảo vệ dữ liệu cá nhân"
+            ]
+        },
+        {
+            "tag": "ai_recommendations",
+            "patterns": [
+                "Gợi ý AI",
+                "AI recommendation",
+                "Smart suggestions",
+                "Personalized picks",
+                "Algorithm suggestions"
+            ],
+            "responses": [
+                "AI phân tích sở thích để gợi ý áo phù hợp",
+                "Dựa vào lịch sử mua hàng đưa ra suggestions",
+                "Machine learning hiểu style cá nhân",
+                "Recommendation engine ngày càng thông minh hơn"
+            ]
+        },
+        {
+            "tag": "blockchain_authentication",
+            "patterns": [
+                "Xác thực blockchain",
+                "NFT jersey",
+                "Digital authentication",
+                "Crypto payment",
+                "Blockchain verify"
+            ],
+            "responses": [
+                "Tương lai sẽ có áo kèm NFT xác thực",
+                "Blockchain đảm bảo áo 100% authentic",
+                "Có thể thanh toán bằng cryptocurrency",
+                "Digital certificate cho mỗi chiếc áo"
+            ]
+        },
+        {
+            "tag": "crisis_support",
+            "patterns": [
+                "Hỗ trợ khủng hoảng",
+                "Emergency help",
+                "Crisis assistance",
+                "Urgent support",
+                "Help needed"
+            ],
+            "responses": [
+                "Shop luôn sẵn sàng hỗ trợ khách hàng khó khăn",
+                "Có chương trình hỗ trợ cộng đồng",
+                "Liên hệ ngay nếu cần giúp đỡ khẩn cấp",
+                "Chia sẻ khó khăn, shop luôn lắng nghe"
+            ]
+        },
+        {
+            "tag": "goodbye",
+            "patterns": [
+                "Tạm biệt",
+                "Cảm ơn",
+                "Bye",
+                "Hẹn gặp lại",
+                "Ok cảm ơn",
+                "Thanks",
+                "See you later",
+                "Goodbye",
+                "Chào tạm biệt",
+                "Cám ơn shop",
+                "Thks",
+                "Thank you",
+                "Bye bye",
+                "Hẹn gặp lại sau",
+                "Chào nhé"
+            ],
+            "responses": [
+                "Cảm ơn bạn đã ghé shop, hẹn gặp lại!",
+                "Shop rất vui được hỗ trợ bạn. Chúc bạn một ngày vui vẻ!",
+                "Bye bye, khi nào cần áo bóng đá cứ nhắn mình nhé!",
+                "Cảm ơn bạn đã tin tưởng shop. Hãy follow để cập nhật hàng mới!",
+                "Hẹn gặp lại bạn sớm thôi! Chúc bạn mua được áo ưng ý!",
+                "Thank you! Hope to see you again soon!"
+            ]
+        },
+        {
+            "tag": "price_inquiry_general",
+            "patterns": [
+                "Giá bao nhiêu?",
+                "Price",
+                "Cost",
+                "How much",
+                "Bao nhiêu tiền?",
+                "Giá cả",
+                "Price list",
+                "Bảng giá"
+            ],
+            "responses": [
+                "Giá áo từ 280k-500k tùy CLB và phiên bản",
+                "Fan version: 280-350k, Player version: 400-500k",
+                "Áo tuyển quốc gia: 350-450k",
+                "Bạn muốn hỏi giá áo CLB nào cụ thể?"
+            ]
+        },
+        {
+            "tag": "default_fallback",
+            "patterns": [
+                "Không hiểu",
+                "Gì vậy?",
+                "Hả?",
+                "Tôi không biết",
+                "Bạn nói gì?",
+                "What?",
+                "I don't understand",
+                "Confused",
+                "Pardon?"
+            ],
+            "responses": [
+                "Xin lỗi, mình chưa hiểu câu hỏi của bạn. Bạn có thể hỏi lại được không?",
+                "Bạn có thể nói rõ hơn được không? Mình sẽ cố gắng hỗ trợ tốt nhất!",
+                "Mình có thể giúp bạn về: áo bóng đá, giá cả, size, giao hàng... Bạn cần hỏi gì?",
+                "Sorry, có thể bạn hỏi về sản phẩm cụ thể để mình tư vấn được không?"
+            ]
         }
-   ]
+        
+    ]
 }

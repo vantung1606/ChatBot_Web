@@ -1,0 +1,20 @@
+# Môi trường ảo
+venv/
+env/
+.env
+
+# Cache của Python
+__pycache__/
+*.pyc
+
+# Database
+*.sqlite3
+db.sqlite3
+
+# File của các IDE
+.idea/
+.vscode/
+
+# File hệ điều hành
+.DS_Store
+Thumbs.db
