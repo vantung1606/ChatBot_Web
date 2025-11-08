@@ -140,7 +140,7 @@
         <option value="$PROJECT_DIR$/Tensorflow_Chatbot/Api/controller.py" />
         <option value="$PROJECT_DIR$/Tensorflow_Chatbot/settings.py" />
         <option value="$PROJECT_DIR$/Bot/ChatBot.py" />
-        <option value="$PROJECT_DIR$/Bot/test.py" />
+  <!-- removed reference to Bot/test.py -->
         <option value="$PROJECT_DIR$/Bot/loadData.py" />
         <option value="$PROJECT_DIR$/Tensorflow_Chatbot/Views/index.html" />
         <option value="$PROJECT_DIR$/Bot/content.json" />
@@ -710,13 +710,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Bot/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="30" column="17" lean-forward="false" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
+    <!-- removed editorHistory entry for Bot/test.py -->
     <entry file="file://$PROJECT_DIR$/Bot/loadData.py" />
     <entry file="file://$PROJECT_DIR$/Bot/checkpoint">
       <provider selected="true" editor-type-id="text-editor">
