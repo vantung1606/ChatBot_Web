@@ -33,7 +33,6 @@ class ChatBot(object):
         train_x = data['train_x']
         train_y = data['train_y']
         self.context = {} 
-        # Sửa lại thành như sau
         with open(path.getJsonPath(), encoding='utf-8') as json_data:
             self.intents = json.load(json_data)
         # Tái tạo lại kiến trúc mạng nơ-ron
@@ -73,42 +72,26 @@ class ChatBot(object):
         return return_list
     # Logic cốt lõi của Chatbot
     def response(self, sentence, userID='111', show_details=False):
-    # Classify the sentence to get a sorted list of intents
-     results = self.classify(sentence)
 
-    # Check if classification returned any results
+     results = self.classify(sentence)
      if results:
-        # Loop through all results, not just the top one
         for intent_tag, probability in results:
-            # Find the full intent details from our predefined list
             for i in self.intents['intents']:
                 if i['tag'] == intent_tag:
-                    
-                    # --- Context Filtering Logic ---
-                    # Check if this intent requires a context
                     has_context_filter = 'context_filter' in i
-                    
-                    # Check if the user's current context matches what the intent needs
-                    # Note: We get the context from self.context now!
                     user_context = self.context.get(userID)
                     context_is_valid = user_context == i.get('context_filter')
 
-                    # If the intent has no context filter, or if the context is valid...
                     if not has_context_filter or context_is_valid:
                         if show_details:
                             print('tag:', i['tag'])
-
-                        # --- Context Setting Logic ---
-                        # If this intent sets a new context, update it in self.context
                         if 'context_set' in i:
                             if show_details:
                                 print('context set:', i['context_set'])
                             self.context[userID] = i['context_set']
-                        # If the intent doesn't set a context, clear the user's old context
                         else:
                             self.context.pop(userID, None)
                             
-                        # Return a random response
                         return random.choice(i['responses'])
 
     # Nếu không tìm thấy intent phù hợp, sử dụng logic thông minh hơn

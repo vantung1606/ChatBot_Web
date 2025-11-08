@@ -70,9 +70,7 @@ python setup.py install
 
 #### CLI
 
-You can interact with bot through command line interface. So find [cli.py](https://github.com/Sweatnessstrong/CHATBOT_WEB/blob/master/CLI/cli.py) file from */CLI* directory and then execute.
-
-![cli](https://user-images.githubusercontent.com/7195953/34639005-60870836-f2fd-11e7-8f73-ed0d100b5521.PNG)
+<!-- CLI tool removed from this repository. Use Web interface, REST API or GUI (if available) to interact with the bot. -->
 
 
 ## Built With
