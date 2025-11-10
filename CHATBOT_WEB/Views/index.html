@@ -3,81 +3,209 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>ChatBot</title>
     <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
-    <link rel="stylesheet" href="{% static "css/css/common-page.css" %}">
     <link rel="stylesheet" href="{% static "css/font-awesome-4.7.0/css/font-awesome.min.css" %}">
-    <link rel="stylesheet" href="{% static "css/toastr.css" %}">
     <script src="{% static "script/jquery-1.10.2.js" %}"></script>
     <script src="{% static "script/bootstrap.min.js" %}"></script>
-    <script src="{% static "script/toastr.js" %}"></script>
+    <style>
+        body { background-color: #f4f7f6; margin-top: 20px; font-family: Arial, sans-serif; }
+        .chat-container {
+            margin: 0 auto;
+            max-width: 700px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+        }
+        .chat-header {
+            padding: 20px;
+            border-bottom: 2px solid #f4f7f6;
+            background-color: #5DADE2;
+            color: white;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .chat-header h3 { margin: 0; font-size: 20px; }
+        .chat-box {
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+        .message-row {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .user-message { align-items: flex-end; }
+        .bot-message { align-items: flex-start; }
+        .message-content {
+            max-width: 75%;
+            padding: 12px 18px;
+            border-radius: 20px;
+            position: relative;
+            line-height: 1.5;
+        }
+        .user-message .message-content { background: #5DADE2; color: white; }
+        .bot-message .message-content { background: #EAECEE; color: #333; }
+        .chat-input-area {
+            padding: 20px;
+            border-top: 2px solid #f4f7f6;
+            display: flex;
+            background-color: #fff;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+        #MessageInput {
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            flex-grow: 1;
+        }
+        #MessageInput:focus {
+            border-color: #5DADE2;
+            box-shadow: none;
+        }
+        #SendButton {
+            border-radius: 20px;
+            margin-left: 10px;
+            background-color: #5DADE2;
+            border-color: #5DADE2;
+            width: 100px;
+        }
+        .product-link-btn {
+            background-color: #fff;
+            color: #5DADE2;
+            border: 1px solid #5DADE2;
+            padding: 8px 12px;
+            border-radius: 15px;
+            text-decoration: none !important;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+            transition: all 0.2s;
+        }
+        .product-link-btn:hover {
+            background-color: #5DADE2;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
 <section>
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="row cnt">
-                    <div class="col-md-12">
-                        <h3><i class="fa fa-commenting"></i>Welcome to Slack</h3>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="row" id="MessageContent">
-                        </div>
-                    </div>
-                    <div class="col-md12">
-                        <hr>
-                        <textarea class="form-control" style="width: 100%" rows="6"
-                                  placeholder="Enter your message here" id="Message"></textarea>
-                        <button class="cus-btn-normal" id="Reply">Send</button>
+        <div class="chat-container">
+            <div class="chat-header">
+                <h3><i class="fa fa-comments"></i> ChatBot Bán Hàng</h3>
+            </div>
+            <div class="chat-box" id="MessageContent">
+                <!-- Tin nhắn chào mừng -->
+                <div class="message-row bot-message">
+                    <div class="message-content">
+                        <p>Xin chào! Tôi là trợ lý ảo của shop. Tôi có thể giúp gì cho bạn?</p>
                     </div>
                 </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" class="form-control" placeholder="Hỏi về áo đấu, giày, size..." id="MessageInput">
+                <button class="btn btn-primary" id="SendButton">Gửi <i class="fa fa-paper-plane"></i></button>
             </div>
         </div>
     </div>
 </section>
 
 <script>
-    toastr.options.positionClass = 'toast-bottom-left';
+$(document).ready(function() {
+    // --- CÁC BIẾN VÀ HẰNG SỐ ---
+    const API_URL = '/api/chat/';
+    const messageInput = $('#MessageInput');
+    const sendButton = $('#SendButton');
+    const messageContent = $('#MessageContent');
 
-    var msgText = $('#Message');
+    // --- CÁC HÀM XỬ LÝ ---
 
-    $('#Reply').click(function () {
-
-        var msg = msgText.val()
-        if (msg == '') {
-            toastr.error("Message can not be empty")
-            return;
+    // Hàm gửi tin nhắn lên server
+    function sendMessage() {
+        const userMessage = messageInput.val().trim();
+        if (userMessage === '') {
+            return; // Không gửi tin nhắn rỗng
         }
 
-        var data = {
-            "msg": msg
-        }
+        appendUserMessage(userMessage); // Hiển thị tin nhắn người dùng ngay lập tức
+        messageInput.val(''); // Xóa nội dung trong ô nhập
+
+        // Gửi request AJAX đến Django backend
         $.ajax({
-            url: '/api',
-            data: JSON.stringify(data),
+            url: API_URL,
             method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ "message": userMessage }), // Gửi đúng định dạng {"message": "..."}
             success: function (res) {
-                drawMessage(res)
+                // Xử lý câu trả lời từ bot
+                if (res.response) {
+                    appendBotMessage(res.response);
+                } else {
+                    appendBotMessage({ type: 'text', text: 'Lỗi: Không nhận được phản hồi từ bot.' });
+                }
             },
             error: function (err) {
-                if (err.desc == null)
-                    err.desc = "Something went wrong"
-                toastr.error(err.desc)
+                console.error("Lỗi AJAX:", err);
+                appendBotMessage({ type: 'text', text: 'Xin lỗi, có lỗi kết nối đến server.' });
             }
-        })
-
-    })
-
-
-    var msgContent = $('#MessageContent');
-
-    function drawMessage(res) {
-        msgContent.append("<div class='col-md-6 owner-message'><p>"+res.ques+"</p><p class='time'>"+res.time+"</p></div>");
-        msgContent.append("<div class='col-md-6 guest-message'><p>"+res.res+"</p><p class='time'>"+res.time+"</p></div>")
-        msgText.val('')
+        });
     }
 
+    // Hàm hiển thị tin nhắn của người dùng
+    function appendUserMessage(message) {
+        const userHtml = `
+            <div class="message-row user-message">
+                <div class="message-content">
+                    <p>${message}</p>
+                </div>
+            </div>`;
+        messageContent.append(userHtml);
+        scrollToBottom();
+    }
+
+    // Hàm hiển thị tin nhắn của bot (có thể chứa link)
+    function appendBotMessage(response) {
+        let botText = response.text || "Bot không trả lời.";
+        // Tạo nội dung HTML cho tin nhắn của bot
+        let botHtml = `
+            <div class="message-row bot-message">
+                <div class="message-content">
+                    <p>${botText.replace(/\n/g, '<br>')}</p>`; // Thay thế ký tự xuống dòng bằng thẻ <br>
+        
+        // Nếu là sản phẩm và có link, thêm nút bấm "Xem chi tiết"
+        if (response.type === 'product' && response.link) {
+            botHtml += `<a href="${response.link}" target="_blank" class="product-link-btn">👉 Xem chi tiết sản phẩm</a>`;
+        }
+        
+        botHtml += `</div></div>`;
+        messageContent.append(botHtml);
+        scrollToBottom();
+    }
+
+    // Hàm tự động cuộn xuống tin nhắn mới nhất
+    function scrollToBottom() {
+        messageContent.scrollTop(messageContent[0].scrollHeight);
+    }
+
+    // --- GÁN SỰ KIỆN ---
+
+    // Khi bấm nút "Gửi"
+    sendButton.click(sendMessage);
+
+    // Khi nhấn phím Enter trong ô nhập liệu
+    messageInput.keypress(function (e) {
+        if (e.which === 13) { // 13 là mã của phím Enter
+            e.preventDefault(); // Ngăn hành vi mặc định của Enter (xuống dòng)
+            sendMessage();
+        }
+    });
+});
 </script>
 
 </body>

@@ -1,20 +1,26 @@
-import nltk
-from nltk.stem.lancaster import LancasterStemmer
+import os
+import django
 
+# --- Cấu hình môi trường Django (Rất quan trọng) ---
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CHATBOT_WEB.settings')
+django.setup()
+# --- Kết thúc cấu hình ---
+
+import nltk
 import numpy as np
 import tflearn
 import random
-
 import pickle
 import json
 from Bot import path
+from intent_manager.models import Intent # ✅ Lấy dữ liệu từ model
 nltk.download('punkt')
 
 
 class ChatBot(object):
 
     instance = None
-    # đảm bảo bộ nhớ chỉ lưu 1 lần
+    # Đảm bảo bộ nhớ chỉ lưu 1 lần
     @classmethod
     def getBot(cls):
         if cls.instance is None:
@@ -26,19 +32,24 @@ class ChatBot(object):
         if self.instance is not None:
             raise ValueError("Did you forgot to call getBot function ? ")
 
-        self.stemmer = LancasterStemmer()
         data = pickle.load(open(path.getPath('trained_data'), "rb"))
         self.words = data['words']
         self.classes = data['classes']
         train_x = data['train_x']
         train_y = data['train_y']
         self.context = {} 
-        with open(path.getJsonPath(), encoding='utf-8') as json_data:
-            self.intents = json.load(json_data)
+        
+        # ✅ THAY ĐỔI LỚN: Lấy toàn bộ intent từ DB và lưu vào một dictionary để truy cập nhanh
+        print("Loading intents from database into memory...")
+        self.intents_from_db = {
+            intent.tag: intent for intent in Intent.objects.prefetch_related('responses').all()
+        }
+        print(f"Loaded {len(self.intents_from_db)} intents.")
+
         # Tái tạo lại kiến trúc mạng nơ-ron
         net = tflearn.input_data(shape=[None, len(train_x[0])])
-        net = tflearn.fully_connected(net, 8)
-        net = tflearn.fully_connected(net, 8)
+        net = tflearn.fully_connected(net, 16) # ✅ THAY ĐỔI: Phải giống với file train.py
+        net = tflearn.fully_connected(net, 16) # ✅ THAY ĐỔI: Phải giống với file train.py
         net = tflearn.fully_connected(net, len(train_y[0]), activation='softmax')
         net = tflearn.regression(net)
         # Tải trọng số (kiến thức) đã huấn luyện vào mô hình
@@ -46,283 +57,180 @@ class ChatBot(object):
         self.model.load(path.getPath('model.tflearn'))
 
     def clean_up_sentence(self, sentence):
+        # Hàm này không cần show_details vì nó được gọi từ bow() và response() đã có giải thích
         sentence_words = nltk.word_tokenize(sentence)
-        sentence_words = [self.stemmer.stem(word.lower()) for word in sentence_words]
+        sentence_words = [word.lower() for word in sentence_words] # ✅ THAY ĐỔI: Chỉ chuyển về chữ thường
         return sentence_words
 
     def bow(self, sentence, words, show_details=False):
         sentence_words = self.clean_up_sentence(sentence)
+        if show_details:
+            print(f"   - Các từ đã xử lý trong câu: {sentence_words}")
+            print(f"   - So khớp với từ điển của Bot ({len(words)} từ)...")
+
         bag = [0] * len(words)
         for s in sentence_words:
             for i, w in enumerate(words):
                 if w == s:
                     bag[i] = 1
                     if show_details:
-                        print("found in bag: %s" % w)
+                        print(f"     -> Tìm thấy từ '{w}' trong từ điển. Đánh dấu '1' vào vector.")
         return np.array(bag)
+        
     # Dự đoán ý định
-    def classify(self, sentence):
-        ERROR_THRESHOLD = 0.25
-        results = self.model.predict([self.bow(sentence, self.words)])[0]
-        results = [[i, r] for i, r in enumerate(results) if r > ERROR_THRESHOLD]
+    def classify(self, sentence, error_threshold, show_details=False):
+        # Tạo vector Bag of Words
+        bow_vector = self.bow(sentence, self.words, show_details=show_details)
+        if show_details:
+            print(f"   - Vector 'Túi từ' cuối cùng đã được tạo. Bắt đầu đưa vào mô hình AI để dự đoán.")
+
+        results = self.model.predict([bow_vector])[0]
+        
+        # Lọc ra các kết quả có xác suất thấp
+        results = [[i, r] for i, r in enumerate(results) if r > error_threshold]
+        # Sắp xếp theo thứ tự xác suất giảm dần
         results.sort(key=lambda x: x[1], reverse=True)
+        
         return_list = []
         for r in results:
             return_list.append((self.classes[r[0]], r[1]))
         return return_list
-    # Logic cốt lõi của Chatbot
+        
+    # ✅ HÀM RESPONSE ĐÃ CHUẨN HÓA - LUÔN TRẢ VỀ DICTIONARY
     def response(self, sentence, userID='111', show_details=False):
+        # ✅ ĐỊNH NGHĨA CÁC NGƯỠNG Ở ĐÂY
+        ERROR_THRESHOLD = 0.1  # Ngưỡng tối thiểu để một dự đoán được xem xét
+        CONFIDENCE_THRESHOLD = 0.4 # Ngưỡng tối thiểu để bot tự tin trả lời
 
-     results = self.classify(sentence)
-     if results:
-        for intent_tag, probability in results:
-            for i in self.intents['intents']:
-                if i['tag'] == intent_tag:
-                    has_context_filter = 'context_filter' in i
-                    user_context = self.context.get(userID)
-                    context_is_valid = user_context == i.get('context_filter')
+        if show_details: # Bắt đầu tường thuật
+            print(f"\n{'='*15} BƯỚC 1: TIỀN XỬ LÝ & MÃ HÓA {'='*14}")
+            print(f"Mục tiêu: Biến câu '{sentence}' thành một vector số mà AI có thể hiểu.")
 
-                    if not has_context_filter or context_is_valid:
-                        if show_details:
-                            print('tag:', i['tag'])
-                        if 'context_set' in i:
-                            if show_details:
-                                print('context set:', i['context_set'])
-                            self.context[userID] = i['context_set']
-                        else:
-                            self.context.pop(userID, None)
-                            
-                        return random.choice(i['responses'])
+        # Gọi hàm classify, hàm này sẽ tự động gọi bow và clean_up_sentence
+        # và in ra các bước chi tiết nếu show_details=True
+        results = self.classify(sentence, error_threshold=ERROR_THRESHOLD, show_details=show_details)
 
-    # Nếu không tìm thấy intent phù hợp, sử dụng logic thông minh hơn
-     return self.smart_fallback_response(sentence, userID)
+        # CẢI TIẾN: Chỉ xử lý nếu có kết quả và độ tin cậy đủ cao
+        if results:
+            intent_tag, probability = results[0] # Lấy tag và độ tin cậy cao nhất
+            if show_details:
+                print(f"\n{'='*15} BƯỚC 2: DỰ ĐOÁN Ý ĐỊNH {'='*17}")
+                print(f"Mô hình AI đã phân tích và đưa ra các dự đoán sau (với độ tin cậy > {ERROR_THRESHOLD:.0%}):")
+                for r in results:
+                    print(f"   - Ý định: '{r[0]}', Độ tin cậy: {r[1]:.2%}")
+                
+                print(f"\n{'='*15} BƯỚC 3: RA QUYẾT ĐỊNH {'='*18}")
+                print(f"So sánh độ tin cậy của ý định cao nhất ('{intent_tag}' - {probability:.2%}) với ngưỡng quyết định ({CONFIDENCE_THRESHOLD:.2%}).")
 
-    def smart_fallback_response(self, sentence, userID='111'):
+            if probability > CONFIDENCE_THRESHOLD:
+                if show_details: 
+                    print(f"   -> KẾT LUẬN: Đủ tin cậy. Bot sẽ tìm câu trả lời trong database cho tag '{intent_tag}'.")
+                
+                # ✅ THAY ĐỔI LỚN: Tìm intent trong dictionary đã tải từ DB
+                intent_obj = self.intents_from_db.get(intent_tag)
+                if intent_obj:
+                    # Lấy danh sách các câu trả lời từ đối tượng intent
+                    responses_list = [resp.text for resp in intent_obj.responses.all()]
+                    if not responses_list:
+                        return {"type": "text", "text": f"(Lỗi hệ thống: Intent '{intent_tag}' không có câu trả lời nào trong DB)"}
+
+                    # 1. Nếu là intent sản phẩm
+                    if intent_obj.product_page_url:
+                        return {"type": "product", "text": random.choice(responses_list), "link": intent_obj.product_page_url}
+                    # 2. Nếu là intent thông thường
+                    else:
+                        self.context.pop(userID, None)
+                        return {"type": "text", "text": random.choice(responses_list)}
+
+            else:
+                if show_details: 
+                    print(f"   -> KẾT LUẬN: Không đủ tin cậy. Kích hoạt chế độ trả lời mặc định (Fallback).")
+                return { "type": "text", "text": self.smart_fallback_response(sentence, userID, show_details=show_details) }
+
+        # 3. Nếu không phân loại được hoặc độ tin cậy quá thấp (fallback)
+        if show_details:
+            print(f"\n{'='*15} BƯỚC 2: DỰ ĐOÁN Ý ĐỊNH {'='*17}")
+            print(f"Mô hình AI không tìm thấy ý định nào có độ tin cậy lớn hơn ngưỡng lỗi ({ERROR_THRESHOLD:.0%}).")
+            print(f"\n{'='*15} BƯỚC 3: RA QUYẾT ĐỊNH {'='*18}")
+            print("   -> KẾT LUẬN: Không thể xác định ý định. Kích hoạt chế độ trả lời mặc định (Fallback).")
+        return {
+            "type": "text",
+            "text": self.smart_fallback_response(sentence, userID, show_details=show_details)
+        }
+
+    # === HÀM FALLBACK (ĐÃ ĐÚNG) ===
+    def smart_fallback_response(self, sentence, userID='111', show_details=False):
         """
-        Xử lý các câu hỏi ngoài phạm vi training một cách thông minh
+        Xử lý các câu hỏi ngoài phạm vi training một cách thông minh.
         """
+        if show_details:
+            print("\n   --- Phân tích bên trong chế độ Fallback ---")
+            print("   Mục tiêu: Tìm một câu trả lời phù hợp dựa trên các từ khóa định sẵn, thay vì dùng AI.")
+
         sentence_lower = sentence.lower()
         
-        # Kiểm tra context trước đó để trả lời phù hợp
-        user_context = self.context.get(userID, '')
-        
-        # Nếu đang trong context về một CLB cụ thể
-        if user_context and any(clb in user_context.lower() for clb in ['real madrid', 'barcelona', 'manchester united', 'liverpool', 'psg', 'bayern']):
-            if any(keyword in sentence_lower for keyword in ['giá', 'bao nhiêu', 'tiền', 'cost', 'price']):
-                return f"Áo {user_context} có giá từ 350-450k tùy phiên bản (Fan/Player). Bạn muốn phiên bản nào?"
-            elif any(keyword in sentence_lower for keyword in ['mua', 'đặt', 'order', 'purchase']):
-                return f"Bạn muốn đặt áo {user_context} phải không? Mình có thể tư vấn size và phiên bản cho bạn!"
-            elif any(keyword in sentence_lower for keyword in ['size', 'cỡ', 'vừa']):
-                return f"Áo {user_context} có size S-XL. Bạn cao bao nhiêu để mình tư vấn size phù hợp?"
-            elif any(keyword in sentence_lower for keyword in ['mới', 'new', '2024', '2025']):
-                return f"Áo {user_context} mùa giải 2024-25 đã về! Giá từ 380-480k tùy phiên bản."
-            elif any(keyword in sentence_lower for keyword in ['cũ', 'old', 'retro', 'vintage']):
-                return f"Shop có áo {user_context} các mùa trước từ 2020-2023. Bạn muốn mùa nào?"
-        
-        # Kiểm tra các từ khóa liên quan đến bóng đá
+        # Kiểm tra các từ khóa liên quan đến bóng đá (chung chung)
         football_keywords = ['bóng đá', 'football', 'soccer', 'clb', 'đội tuyển', 'cầu thủ', 'sân', 'trận đấu']
         if any(keyword in sentence_lower for keyword in football_keywords):
-            return "Mình hiểu bạn đang hỏi về bóng đá! Shop chuyên về áo bóng đá các CLB và đội tuyển. Bạn muốn tìm áo CLB nào cụ thể không?"
+            if show_details:
+                found_keyword = next((k for k in football_keywords if k in sentence_lower), None)
+                print(f"   -> KIỂM TRA 1: Tìm thấy từ khóa '{found_keyword}' thuộc nhóm 'bóng đá'. Chọn câu trả lời tương ứng.")
+            return "Mình hiểu bạn đang hỏi về bóng đá! Shop chuyên về áo bóng đá và phụ kiện. Bạn muốn tìm áo/giày/phụ kiện nào cụ thể không?"
         
-        # Kiểm tra các từ khóa về thời trang
-        fashion_keywords = ['áo', 'quần', 'giày', 'mặc', 'thời trang', 'style']
-        if any(keyword in sentence_lower for keyword in fashion_keywords):
-            return "Shop chuyên về áo bóng đá chính hãng! Bạn có thể hỏi về áo CLB, áo tuyển quốc gia, hoặc phụ kiện bóng đá nhé!"
-        
-        # Kiểm tra các từ khóa về mua sắm
+        # Kiểm tra các từ khóa về mua sắm (chung chung)
         shopping_keywords = ['mua', 'bán', 'giá', 'tiền', 'đặt hàng', 'thanh toán']
         if any(keyword in sentence_lower for keyword in shopping_keywords):
-            return "Bạn muốn mua áo bóng đá phải không? Shop có đầy đủ áo các CLB lớn như Real Madrid, Barcelona, Manchester United... Bạn quan tâm CLB nào?"
+            if show_details:
+                found_keyword = next((k for k in shopping_keywords if k in sentence_lower), None)
+                print(f"   -> KIỂM TRA 2: Tìm thấy từ khóa '{found_keyword}' thuộc nhóm 'mua sắm'. Chọn câu trả lời tương ứng.")
+            return "Bạn muốn mua hàng phải không? Bạn có thể hỏi mình về sản phẩm cụ thể (ví dụ: 'Áo CLB Barcelona 2024-2025 giá bao nhiêu?') và mình sẽ báo giá nhé!"
         
-        # Kiểm tra và lưu context về CLB cụ thể
-        clb_keywords = {
-            'real madrid': ['real madrid', 'real', 'madrid'],
-            'barcelona': ['barcelona', 'barca', 'fc barcelona'],
-            'manchester united': ['manchester united', 'man utd', 'mu', 'man united'],
-            'liverpool': ['liverpool', 'lfc', 'liverpool fc'],
-            'psg': ['psg', 'paris saint-germain', 'paris'],
-            'bayern munich': ['bayern', 'bayern munich', 'bayern münchen']
-        }
-        
-        # Kiểm tra và lưu context về đội tuyển quốc gia
-        national_team_keywords = {
-            'đội tuyển pháp': ['đội tuyển pháp', 'tuyển pháp', 'france', 'pháp'],
-            'đội tuyển anh': ['đội tuyển anh', 'tuyển anh', 'england', 'anh'],
-            'đội tuyển argentina': ['đội tuyển argentina', 'tuyển argentina', 'argentina'],
-            'đội tuyển brazil': ['đội tuyển brazil', 'tuyển brazil', 'brazil'],
-            'đội tuyển việt nam': ['đội tuyển việt nam', 'tuyển việt nam', 'vietnam'],
-            'đội tuyển đức': ['đội tuyển đức', 'tuyển đức', 'germany', 'đức'],
-            'đội tuyển tây ban nha': ['đội tuyển tây ban nha', 'tuyển tây ban nha', 'spain', 'tây ban nha']
-        }
-        
-        # Kiểm tra đội tuyển quốc gia trước
-        for team_name, keywords in national_team_keywords.items():
-            if any(keyword in sentence_lower for keyword in keywords):
-                # Lưu context về đội tuyển này
-                self.context[userID] = team_name
-                return f"Bạn quan tâm áo {team_name} phải không? Mình có áo chính thức của đội tuyển này! Giá từ 380-480k."
-        
-        # Kiểm tra CLB sau
-        for clb_name, keywords in clb_keywords.items():
-            if any(keyword in sentence_lower for keyword in keywords):
-                # Lưu context về CLB này
-                self.context[userID] = clb_name
-                return f"Bạn quan tâm áo {clb_name} phải không? Mình có thể tư vấn về giá cả, size, phiên bản cho bạn!"
-        
-        # Kiểm tra các từ khóa về thể thao khác
+        # Kiểm tra các từ khóa về thể thao khác (để từ chối)
         other_sports = ['bóng rổ', 'tennis', 'cầu lông', 'bơi lội', 'gym', 'fitness', 'bóng chuyền', 'bóng bàn', 'bơi', 'chạy']
         if any(sport in sentence_lower for sport in other_sports):
+            if show_details:
+                found_keyword = next((k for k in other_sports if k in sentence_lower), None)
+                print(f"   -> KIỂM TRA 3: Tìm thấy từ khóa '{found_keyword}' thuộc nhóm 'thể thao khác'. Chọn câu trả lời từ chối.")
             return "Xin lỗi, shop chỉ chuyên về áo bóng đá thôi ạ! Mình có thể giúp bạn tìm áo CLB hoặc áo tuyển quốc gia nhé!"
         
-        # Kiểm tra các câu hỏi cá nhân
+        # Kiểm tra các câu hỏi cá nhân (để từ chối)
         personal_keywords = ['tên', 'tuổi', 'ở đâu', 'làm gì', 'nghề nghiệp']
         if any(keyword in sentence_lower for keyword in personal_keywords):
-            return "Mình là chatbot của shop áo bóng đá! Mình có thể giúp bạn tìm áo CLB, tư vấn size, giá cả, giao hàng... Bạn cần hỗ trợ gì?"
+            if show_details:
+                found_keyword = next((k for k in personal_keywords if k in sentence_lower), None)
+                print(f"   -> KIỂM TRA 4: Tìm thấy từ khóa '{found_keyword}' thuộc nhóm 'cá nhân'. Chọn câu trả lời tương ứng.")
+            return "Mình là chatbot của shop áo bóng đá! Mình có thể giúp bạn tìm sản phẩm, tư vấn size, giá cả... Bạn cần hỗ trợ gì?"
         
-        # Kiểm tra các câu hỏi về thời tiết, tin tức
-        news_keywords = ['thời tiết', 'tin tức', 'chính trị', 'kinh tế', 'covid']
-        if any(keyword in sentence_lower for keyword in news_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi ạ! Bạn có thể hỏi mình về áo CLB, giá cả, size, hoặc cách đặt hàng nhé!"
+        # Gộp chung các chủ đề không liên quan
+        off_topic_keywords = [
+            'thời tiết', 'tin tức', 'chính trị', 'kinh tế', 'covid',
+            'máy tính', 'điện thoại', 'app', 'website', 'lập trình', 'code',
+            'ăn', 'uống', 'nhà hàng', 'cafe', 'món ăn',
+            'du lịch', 'đi chơi', 'khách sạn', 'vé máy bay',
+            'học', 'trường', 'sinh viên', 'bài tập', 'thi cử',
+            'bệnh', 'thuốc', 'bác sĩ', 'sức khỏe', 'y tế',
+            'yêu', 'thích', 'bạn gái', 'bạn trai',
+            'công việc', 'làm việc', 'lương',
+            'phim', 'nhạc', 'game', 'ca sĩ',
+            'tài chính', 'ngân hàng', 'đầu tư',
+            'xe', 'ô tô', 'xe máy',
+            'nhà', 'căn hộ', 'thuê nhà',
+            'chó', 'mèo', 'thú cưng',
+            'vẽ', 'hội họa', 'âm nhạc', 'nghệ thuật',
+            'mấy giờ', 'thời gian', 'ngày', 'tháng',
+            'địa lý', 'lịch sử', 'khoa học', 'tôn giáo'
+        ]
         
-        # Kiểm tra các câu hỏi về công nghệ
-        tech_keywords = ['máy tính', 'điện thoại', 'app', 'website', 'internet', 'lập trình', 'code', 'phần mềm', 'hệ thống', 'database']
-        if any(keyword in sentence_lower for keyword in tech_keywords):
-            return "Shop chuyên về áo bóng đá, không bán đồ công nghệ ạ! Bạn muốn tìm áo CLB nào để mình tư vấn?"
+        if any(keyword in sentence_lower for keyword in off_topic_keywords):
+            if show_details:
+                found_keyword = next((k for k in off_topic_keywords if k in sentence_lower), None)
+                print(f"   -> KIỂM TRA 5: Tìm thấy từ khóa '{found_keyword}' thuộc nhóm 'không liên quan'. Chọn câu trả lời từ chối.")
+            return "Mình chỉ biết về áo bóng đá và các phụ kiện thể thao thôi ạ! Bạn có thể hỏi mình về các sản phẩm của shop nhé!"
+
         
-        # Kiểm tra các câu hỏi về ẩm thực
-        food_keywords = ['ăn', 'uống', 'nhà hàng', 'cafe', 'món ăn', 'thức ăn']
-        if any(keyword in sentence_lower for keyword in food_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn xem mẫu nào không?"
-        
-        # Kiểm tra các câu hỏi về du lịch
-        travel_keywords = ['du lịch', 'đi chơi', 'nghỉ mát', 'khách sạn', 'vé máy bay', 'resort', 'nghỉ dưỡng']
-        if any(keyword in sentence_lower for keyword in travel_keywords):
-            return "Shop chỉ bán áo bóng đá thôi ạ! Bạn có thể hỏi mình về áo CLB, áo tuyển quốc gia, hoặc phụ kiện bóng đá nhé!"
-        
-        # Kiểm tra các câu hỏi về giáo dục
-        education_keywords = ['học', 'trường', 'sinh viên', 'bài tập', 'thi cử', 'sách', 'đọc', 'truyện', 'tiểu thuyết']
-        if any(keyword in sentence_lower for keyword in education_keywords):
-            return "Mình chỉ tư vấn về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về sức khỏe
-        health_keywords = ['bệnh', 'thuốc', 'bác sĩ', 'sức khỏe', 'y tế', 'bệnh viện', 'y tá', 'khám']
-        if any(keyword in sentence_lower for keyword in health_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi ạ! Bạn có thể hỏi mình về áo CLB, giá cả, size, hoặc cách đặt hàng nhé!"
-        
-        # Kiểm tra các câu hỏi về tình cảm
-        relationship_keywords = ['yêu', 'thích', 'bạn gái', 'bạn trai', 'hôn nhân']
-        if any(keyword in sentence_lower for keyword in relationship_keywords):
-            return "Mình chỉ tư vấn về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào để tặng người yêu không?"
-        
-        # Kiểm tra các câu hỏi về công việc
-        work_keywords = ['công việc', 'làm việc', 'lương', 'nghề', 'công ty']
-        if any(keyword in sentence_lower for keyword in work_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về giải trí
-        entertainment_keywords = ['phim', 'nhạc', 'game', 'ca sĩ', 'diễn viên']
-        if any(keyword in sentence_lower for keyword in entertainment_keywords):
-            return "Mình chỉ tư vấn về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về tài chính
-        finance_keywords = ['tiền', 'ngân hàng', 'đầu tư', 'cổ phiếu', 'bitcoin', 'kinh tế', 'thị trường']
-        if any(keyword in sentence_lower for keyword in finance_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về xe cộ
-        vehicle_keywords = ['xe', 'ô tô', 'xe máy', 'xe đạp', 'giao thông', 'vận tải', 'tàu', 'máy bay']
-        if any(keyword in sentence_lower for keyword in vehicle_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về nhà cửa
-        house_keywords = ['nhà', 'căn hộ', 'mua nhà', 'thuê nhà', 'nội thất', 'xây dựng', 'công trình', 'kiến trúc', 'thiết kế']
-        if any(keyword in sentence_lower for keyword in house_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về thú cưng
-        pet_keywords = ['chó', 'mèo', 'thú cưng', 'nuôi', 'cún']
-        if any(keyword in sentence_lower for keyword in pet_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về nghệ thuật
-        art_keywords = ['vẽ', 'hội họa', 'âm nhạc', 'nghệ thuật', 'tranh']
-        if any(keyword in sentence_lower for keyword in art_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về thời gian
-        time_keywords = ['mấy giờ', 'thời gian', 'ngày', 'tháng', 'năm']
-        if any(keyword in sentence_lower for keyword in time_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về địa lý
-        geography_keywords = ['thành phố', 'quốc gia', 'châu lục', 'biển', 'núi']
-        if any(keyword in sentence_lower for keyword in geography_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về lịch sử
-        history_keywords = ['lịch sử', 'cổ đại', 'chiến tranh', 'vua', 'hoàng đế']
-        if any(keyword in sentence_lower for keyword in history_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về khoa học
-        science_keywords = ['khoa học', 'vật lý', 'hóa học', 'sinh học', 'toán']
-        if any(keyword in sentence_lower for keyword in science_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về tôn giáo
-        religion_keywords = ['tôn giáo', 'phật', 'chúa', 'thánh', 'thiên chúa']
-        if any(keyword in sentence_lower for keyword in religion_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về chính trị
-        politics_keywords = ['chính trị', 'tổng thống', 'thủ tướng', 'bầu cử', 'đảng']
-        if any(keyword in sentence_lower for keyword in politics_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về môi trường
-        environment_keywords = ['môi trường', 'ô nhiễm', 'khí hậu', 'nóng lên', 'xanh']
-        if any(keyword in sentence_lower for keyword in environment_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về pháp luật
-        law_keywords = ['luật', 'pháp luật', 'tòa án', 'luật sư', 'kiện']
-        if any(keyword in sentence_lower for keyword in law_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về quân sự
-        military_keywords = ['quân đội', 'quân sự', 'chiến tranh', 'vũ khí', 'bộ đội']
-        if any(keyword in sentence_lower for keyword in military_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về nông nghiệp
-        agriculture_keywords = ['nông nghiệp', 'trồng trọt', 'chăn nuôi', 'cây trồng', 'vật nuôi']
-        if any(keyword in sentence_lower for keyword in agriculture_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về công nghiệp
-        industry_keywords = ['công nghiệp', 'nhà máy', 'sản xuất', 'máy móc', 'thiết bị']
-        if any(keyword in sentence_lower for keyword in industry_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về dịch vụ
-        service_keywords = ['dịch vụ', 'phục vụ', 'chăm sóc', 'hỗ trợ', 'tư vấn']
-        if any(keyword in sentence_lower for keyword in service_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về bưu chính
-        postal_keywords = ['bưu chính', 'bưu điện', 'gửi thư', 'bưu phẩm', 'thư']
-        if any(keyword in sentence_lower for keyword in postal_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về viễn thông
-        telecom_keywords = ['viễn thông', 'điện thoại', 'internet', 'mạng', 'wifi']
-        if any(keyword in sentence_lower for keyword in telecom_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Kiểm tra các câu hỏi về năng lượng
-        energy_keywords = ['năng lượng', 'điện', 'dầu', 'khí', 'than']
-        if any(keyword in sentence_lower for keyword in energy_keywords):
-            return "Mình chỉ biết về áo bóng đá thôi! Shop có áo các CLB lớn, bạn muốn tìm áo nào?"
-        
-        # Nếu không tìm thấy từ khóa nào, trả về câu trả lời mặc định thông minh hơn
-        return "Xin lỗi, mình chưa hiểu câu hỏi của bạn. Mình chỉ biết về áo bóng đá thôi! Bạn có thể hỏi mình về:\n- Áo CLB (Real Madrid, Barcelona, Manchester United...)\n- Áo tuyển quốc gia\n- Giá cả và size\n- Giao hàng và thanh toán\n- Phụ kiện bóng đá\nBạn muốn hỏi gì cụ thể?"
+        # Câu trả lời mặc định cuối cùng
+        if show_details: print("   -> KIỂM TRA CUỐI: Không tìm thấy từ khóa nào phù hợp trong tất cả các nhóm. Trả về câu trả lời mặc định cuối cùng.")
+        return ("Xin lỗi, mình chưa hiểu câu hỏi của bạn. Mình chỉ biết về các sản phẩm áo bóng đá và phụ kiện của shop thôi!\n"
+                "Bạn có thể hỏi mình về:\n"
+                "- Tên sản phẩm cụ thể (ví dụ: 'Áo CLB Barcelona 2024-2025')\n"
+                "- Các chủ đề chung như 'size', 'giao hàng', 'khuyến mãi'...")

@@ -18,7 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+    'intent_manager', # ✅ THÊM DÒNG NÀY ĐỂ ĐĂNG KÝ APP MỚI
 ]
 
 MIDDLEWARE = [

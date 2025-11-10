@@ -1,20 +1,28 @@
-# Môi trường ảo
-venv/
-env/
-.env
-
-# Cache của Python
-__pycache__/
+# Môi trường ảo Python
+/venv/
+/env/
 *.pyc
 
-# Database
+# Thư mục cache của Python
+__pycache__/
+
+# File database (nếu bạn dùng SQLite để test)
 *.sqlite3
 db.sqlite3
 
-# File của các IDE
+# Các file log
+*.log
+
+# Các file được tạo ra bởi mô hình AI
+# Chúng ta không nên đưa các file này lên Git vì chúng có thể rất lớn
+# và có thể được tạo lại bằng cách chạy script train.py
+/Bot/model.tflearn
+/Bot/trained_data
+/Bot/train_logs/
+
+# Các file cấu hình của IDE
 .idea/
 .vscode/
 
-# File hệ điều hành
+# Các file hệ thống
 .DS_Store
-Thumbs.db

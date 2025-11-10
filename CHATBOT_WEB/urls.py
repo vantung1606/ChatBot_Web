@@ -1,11 +1,13 @@
-from django.urls import path, include
+from django.contrib import admin
+from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index),
-    path('api', include("CHATBOT_WEB.Api.urls")),
-     # Thêm dòng này:
+    # ✅ THÊM DÒNG NÀY: Khai báo đường dẫn cho trang quản trị
+    path('admin/', admin.site.urls),
+
+    # Đường dẫn đến trang chat chính
+    path('', views.index, name='index'),
+    # Đường dẫn API để xử lý tin nhắn
     path('api/chat/', views.chat_api, name='chat_api'), 
-    # Bạn cũng có thể cần một path để hiển thị trang chat
-    # path('', views.chat_page, name='chat_page'), # Sẽ tạo ở bước sau
 ]
