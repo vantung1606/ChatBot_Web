@@ -18,7 +18,7 @@ print("Đang lấy dữ liệu intents từ database...")
 # ✅ THAY ĐỔI LỚN: Không đọc từ file JSON nữa, mà truy vấn thẳng từ database
 intents_from_db = Intent.objects.prefetch_related('patterns', 'responses').all()
 if not intents_from_db:
-    print("LỖI: Không tìm thấy intent nào trong database. Bạn đã chạy 'py manage.py import_intents' chưa?")
+    print("LỖI: Không tìm thấy intent nào trong database. Bạn đã chạy file thuthapdulieu.py để thêm vào database chưa?")
     exit()
 print(f"Đã lấy thành công {len(intents_from_db)} intents.")
 

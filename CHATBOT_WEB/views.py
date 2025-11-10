@@ -3,28 +3,35 @@ from django.template import loader
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+from Bot.ChatBot import ChatBot
+
+# --- THAY ĐỔI QUAN TRỌNG ---
+# Khởi tạo chatbot_instance là None ở cấp độ module.
+# Chúng ta sẽ không khởi tạo bot ngay lập tức để tránh lỗi "con gà và quả trứng"
+# khi chạy các lệnh `makemigrations` và `migrate`.
+chatbot_instance = None
 
 def index(request):
     template = loader.get_template('index.html')
     return HttpResponse(template.render({}, request))
-from Bot.ChatBot import ChatBot
-
-# --- Rất quan trọng: Khởi tạo bot một lần duy nhất ---
-# Việc này giúp không phải tải lại mô hình AI mỗi khi có tin nhắn mới, tiết kiệm rất nhiều thời gian.
-print("Initializing ChatBot...")
-chatbot_instance = ChatBot.getBot()
-print("ChatBot Initialized.")
 
 @csrf_exempt # Tạm thời bỏ qua kiểm tra CSRF để test API dễ hơn
 def chat_api(request):
-    # Chỉ chấp nhận các request gửi bằng phương thức POST
+    # ✅ THAY ĐỔI: Đảm bảo chatbot chỉ được khởi tạo một lần duy nhất
+    # bằng cách sử dụng biến global và kiểm tra xem nó đã được khởi tạo chưa.
+    global chatbot_instance
+    if chatbot_instance is None:
+        print("Initializing ChatBot for the first time...")
+        chatbot_instance = ChatBot.getBot()
+        print("ChatBot Initialized and ready.")
+
     if request.method == 'POST':
         try:
             # Lấy dữ liệu JSON mà frontend gửi lên
             data = json.loads(request.body)
             # Lấy tin nhắn từ dữ liệu
             message = data.get('message')
-
+ 
             if message:
                 # Dùng bot đã được khởi tạo để lấy câu trả lời
                 response_message = chatbot_instance.response(message)
@@ -34,5 +41,5 @@ def chat_api(request):
                 return JsonResponse({'error': 'No message provided'}, status=400)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
-    
+ 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
