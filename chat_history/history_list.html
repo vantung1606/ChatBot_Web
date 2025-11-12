@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lịch sử Chat</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f7f6;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .chat-session {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .chat-header {
+            background-color: #f8f9fa;
+            padding: 10px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-weight: bold;
+            color: #555;
+        }
+        .chat-body {
+            padding: 15px;
+        }
+        .user-msg, .bot-msg {
+            margin-bottom: 10px;
+        }
+        .user-msg strong {
+            color: #007bff;
+        }
+        .bot-msg strong {
+            color: #28a745;
+        }
+        .bot-response-text {
+            font-style: italic;
+            color: #444;
+        }
+        .product-link {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 5px 10px;
+            background-color: #ffc107;
+            color: #212529;
+            border-radius: 5px;
+            font-size: 0.9em;
+            text-decoration: none;
+        }
+        .product-link:hover {
+            background-color: #e0a800;
+            color: #212529;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4 text-center">Lịch sử Chat</h1>
+        {% for session in chat_sessions %}
+            <div class="chat-session">
+                <div class="chat-header">
+                    Chat của Khách hàng ID: {{ session.customer_id }} - Lúc: {{ session.timestamp|date:"d/m/Y H:i:s" }}
+                </div>
+                <div class="chat-body">
+                    <div class="user-msg"><strong>Người dùng:</strong> {{ session.user_message }}</div>
+                    <div class="bot-msg">
+                        <strong>Bot:</strong> <span class="bot-response-text">"{{ session.bot_response.text }}"</span>
+                        {% if session.bot_response.type == 'product' and session.bot_response.link %}
+                            <a href="{{ session.bot_response.link }}" target="_blank" class="product-link">🔗 Xem sản phẩm</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-center">Chưa có lịch sử chat nào.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

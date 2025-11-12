@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from Bot.ChatBot import ChatBot
+from chat_history.models import ChatHistory # ✅ THÊM DÒNG NÀY
 
 # --- THAY ĐỔI QUAN TRỌNG ---
 # Khởi tạo chatbot_instance là None ở cấp độ module.
@@ -30,11 +31,35 @@ def chat_api(request):
             # Lấy dữ liệu JSON mà frontend gửi lên
             data = json.loads(request.body)
             # Lấy tin nhắn từ dữ liệu
-            message = data.get('message')
+            user_message = data.get('message')
+
+            # Lấy customer_id từ frontend gửi lên.
+            # Frontend sẽ gửi `null` hoặc không gửi trường này nếu người dùng chưa đăng nhập (chưa login).
+            customer_id = data.get('customer_id')
  
-            if message:
+            # --- ✅ BƯỚC QUAN TRỌNG: KIỂM TRA XEM NGƯỜI DÙNG ĐÃ ĐĂNG NHẬP CHƯA ---
+            # Nếu không có customer_id (là null, 0, hoặc không tồn tại), yêu cầu đăng nhập.
+            if not customer_id:
+                return JsonResponse({
+                    'response': {
+                        'type': 'auth_required',
+                        'text': 'Bạn cần đăng nhập để có thể bắt đầu trò chuyện. Nhấn vào đây để đăng nhập nhé!',
+                        # Thêm link đăng nhập để frontend có thể điều hướng
+                        'link': 'http://localhost:8080/dang-nhap' 
+                    }
+                })
+
+            if user_message:
                 # Dùng bot đã được khởi tạo để lấy câu trả lời
-                response_message = chatbot_instance.response(message)
+                response_message = chatbot_instance.response(user_message)
+
+                # --- ✅ BƯỚC QUAN TRỌNG: LƯU LỊCH SỬ CHAT VÀO DATABASE ---
+                ChatHistory.objects.create(
+                    customer_id=customer_id,
+                    user_message=user_message,
+                    bot_response=response_message # Lưu toàn bộ đối tượng JSON mà bot trả về
+                )
+
                 # Trả về câu trả lời dưới dạng JSON
                 return JsonResponse({'response': response_message})
             else:

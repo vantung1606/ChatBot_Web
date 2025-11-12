@@ -19,6 +19,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'intent_manager', # ✅ THÊM DÒNG NÀY ĐỂ ĐĂNG KÝ APP MỚI
+    'chat_history',   # ✅ THÊM APP LƯU LỊCH SỬ CHAT
+   
 ]
 
 MIDDLEWARE = [
@@ -58,12 +60,21 @@ WSGI_APPLICATION = 'CHATBOT_WEB.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+
 DATABASES = {
+    # Database mặc định cho Django (lưu user, session, lịch sử chat...)
+    # ✅ SỬA LẠI: Dùng database 'chatbot_manager' làm mặc định cho Django
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'chatbot_manager', # Tên database riêng của Django
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': '3366',
+    },
+    
 }
+
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -100,8 +111,6 @@ STATICFILES_DIRS = [
 ]
 # Thêm biến này vào cuối file, thay bằng địa chỉ website của bạn
 CORS_ALLOWED_ORIGINS = [
-    # "http://your-website.com",
-    # "https://your-website.com",
     "http://127.0.0.1:8000",
     "http://127.0.0.1:8080", # Thêm cả địa chỉ này để chắc chắn
     "http://127.0.0.1:5501", # Thêm dòng này nếu bạn test bằng Live Server của VS Code

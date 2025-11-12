@@ -12,7 +12,23 @@ import tflearn
 import random
 import pickle
 from Bot import path
+
+# ✅ BƯỚC 1: IMPORT CÁC HÀM TỪ FILE THU THẬP DỮ LIỆU
+# Chúng ta sẽ coi `thuthapdulieu.py` như một module và lấy các hàm cần thiết
+from Bot.thuthapdulieu import crawl_local_shop, products_to_intents, sync_intents_to_db
+
 from intent_manager.models import Intent, Pattern # Lấy dữ liệu từ model
+
+# --- TỰ ĐỘNG CHẠY QUÁ TRÌNH THU THẬP DỮ LIỆU TRƯỚC KHI HUẤN LUYỆN ---
+print("\n" + "="*50)
+print("BƯỚC 1: TỰ ĐỘNG THU THẬP VÀ CẬP NHẬT DỮ LIỆU SẢN PHẨM")
+print("="*50)
+products = crawl_local_shop()
+if products:
+    new_intents = products_to_intents(products)
+    sync_intents_to_db(new_intents)
+else:
+    print("CẢNH BÁO: Không cào được sản phẩm nào. Tiếp tục huấn luyện với dữ liệu cũ.")
 
 print("Đang lấy dữ liệu intents từ database...")
 # ✅ THAY ĐỔI LỚN: Không đọc từ file JSON nữa, mà truy vấn thẳng từ database
