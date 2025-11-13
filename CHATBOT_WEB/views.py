@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from Bot.ChatBot import ChatBot
 
+
 # --- THAY ĐỔI QUAN TRỌNG ---
 # Khởi tạo chatbot_instance là None ở cấp độ module.
 # Chúng ta sẽ không khởi tạo bot ngay lập tức để tránh lỗi "con gà và quả trứng"
@@ -52,7 +53,6 @@ def chat_api(request):
                 # Dùng bot đã được khởi tạo để lấy câu trả lời
                 response_message = chatbot_instance.response(user_message)
 
-              
 
                 # Trả về câu trả lời dưới dạng JSON
                 return JsonResponse({'response': response_message})

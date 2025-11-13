@@ -100,6 +100,7 @@ class ChatBot(object):
     def response(self, sentence, userID='111', show_details=False):
         # ✅ ĐỊNH NGHĨA CÁC NGƯỠNG Ở ĐÂY
         ERROR_THRESHOLD = 0.1  # Ngưỡng tối thiểu để một dự đoán được xem xét
+
         CONFIDENCE_THRESHOLD = 0.3 # Ngưỡng tối thiểu để bot tự tin trả lời
 
         if show_details: # Bắt đầu tường thuật
@@ -123,8 +124,14 @@ class ChatBot(object):
                 print(f"So sánh độ tin cậy của ý định cao nhất ('{intent_tag}' - {probability:.2%}) với ngưỡng quyết định ({CONFIDENCE_THRESHOLD:.2%}).")
 
             if probability > CONFIDENCE_THRESHOLD:
+
                 if show_details:
                     print(f"   -> KẾT LUẬN: Đủ tin cậy. Bot sẽ tìm câu trả lời trong database cho tag '{intent_tag}'.")
+
+
+                if show_details: 
+                    print(f"   -> KẾT LUẬN: Đủ tin cậy. Bot sẽ tìm câu trả lời trong database cho tag '{intent_tag}'.")
+                
 
                 # ✅ THAY ĐỔI LỚN: Tìm intent trong dictionary đã tải từ DB
                 intent_obj = self.intents_from_db.get(intent_tag)
@@ -143,7 +150,9 @@ class ChatBot(object):
                         return {"type": "text", "text": random.choice(responses_list)}
 
             else:
-                if show_details:
+
+
+                if show_details: 
                     print(f"   -> KẾT LUẬN: Không đủ tin cậy. Kích hoạt chế độ trả lời mặc định (Fallback).")
                 return { "type": "text", "text": self.smart_fallback_response(sentence, userID, show_details=show_details) }
 

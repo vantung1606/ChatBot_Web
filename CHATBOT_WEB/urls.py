@@ -6,7 +6,7 @@ urlpatterns = [
     # ✅ THÊM DÒNG NÀY: Khai báo đường dẫn cho trang quản trị
     path('admin/', admin.site.urls),
 
-   
+
 
     # Đường dẫn đến trang chat chính
     path('', views.index, name='index'),

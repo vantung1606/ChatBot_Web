@@ -20,7 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'intent_manager', # ✅ THÊM DÒNG NÀY ĐỂ ĐĂNG KÝ APP MỚI
 
-   
+
 ]
 
 MIDDLEWARE = [
