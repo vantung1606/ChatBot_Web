@@ -1,0 +1,2 @@
+model_checkpoint_path: "D:/xampp/htdocs/ChatBot_Web-main/Bot/model.tflearn"
+all_model_checkpoint_paths: "D:/xampp/htdocs/ChatBot_Web-main/Bot/model.tflearn"

@@ -1,0 +1,27 @@
+# Môi trường ảo của Python
+venv/
+env/
+*.env
+
+# File cache và bytecode của Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# File database SQLite (phòng trường hợp bạn dùng để test)
+db.sqlite3
+db.sqlite3-journal
+
+# File log
+*.log
+
+# Các file được tạo ra bởi script huấn luyện AI (rất quan trọng)
+# Chúng sẽ được tạo lại mỗi khi bạn chạy train.py
+Bot/model.tflearn*
+Bot/trained_data
+Bot/train_logs/
+
+# Cấu hình của các IDE
+.vscode/
+.idea/
